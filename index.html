@@ -1,0 +1,2494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KiddoWorld English — Fun Learning for Kids!</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Rounded Kid-Friendly Google Font (graceful fallback to system rounded fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       THEME VARIABLES & BASE STYLES
+       ============================================================ */
+    :root {
+      --font-main: 'Fredoka', 'Comic Sans MS', 'Chalkboard SE', ui-rounded, system-ui, sans-serif;
+    }
+
+    /* Boy Mode Palette (Cool Blue, Teal, Sunny Yellow) */
+    body.theme-boy {
+      --bg-grad-from: #dbeafe;
+      --bg-grad-via: #ccfbf1;
+      --bg-grad-to: #fef9c3;
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
+      --secondary: #14b8a6;
+      --accent: #facc15;
+      --accent-text: #854d0e;
+      --card-border: #7dd3fc;
+      --stage-bg-1: #0c4a6e;
+      --stage-bg-2: #0f766e;
+      --glow-color: rgba(56, 189, 248, 0.55);
+      --header-bg: rgba(255, 255, 255, 0.92);
+    }
+
+    /* Girl Mode Palette (Pastel Pink, Purple, Coral) */
+    body.theme-girl {
+      --bg-grad-from: #fce7f3;
+      --bg-grad-via: #f3e8ff;
+      --bg-grad-to: #ffedd5;
+      --primary: #ec4899;
+      --primary-dark: #be185d;
+      --primary-light: #fce7f3;
+      --secondary: #a855f7;
+      --accent: #fb7185;
+      --accent-text: #881337;
+      --card-border: #f9a8d4;
+      --stage-bg-1: #581c87;
+      --stage-bg-2: #9d174d;
+      --glow-color: rgba(244, 114, 182, 0.55);
+      --header-bg: rgba(255, 255, 255, 0.92);
+    }
+
+    body {
+      font-family: var(--font-main);
+      background: linear-gradient(135deg, var(--bg-grad-from), var(--bg-grad-via), var(--bg-grad-to));
+      background-attachment: fixed;
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background 0.5s ease;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    /* Custom utility bindings to CSS variables */
+    .theme-primary-bg { background-color: var(--primary); }
+    .theme-primary-text { color: var(--primary); }
+    .theme-primary-light-bg { background-color: var(--primary-light); }
+    .theme-border { border-color: var(--card-border); }
+    .theme-stage-bg {
+      background: radial-gradient(circle at 50% 20%, var(--stage-bg-2), var(--stage-bg-1));
+    }
+
+    /* Chunky 3D Kid-Friendly Buttons */
+    .btn-chunky {
+      transition: transform 0.14s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.14s ease, filter 0.14s ease;
+      box-shadow: 0 6px 0 rgba(0, 0, 0, 0.18), 0 10px 18px rgba(0, 0, 0, 0.1);
+    }
+    .btn-chunky:hover {
+      transform: translateY(-2px) scale(1.02);
+      filter: brightness(1.04);
+    }
+    .btn-chunky:active {
+      transform: translateY(4px) scale(0.97);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18), 0 4px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Category Card Hover & Bounce */
+    .cat-card {
+      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.22s ease;
+      box-shadow: 0 8px 0 rgba(0, 0, 0, 0.1), 0 14px 24px rgba(0, 0, 0, 0.08);
+    }
+    .cat-card:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 12px 0 rgba(0, 0, 0, 0.12), 0 20px 28px rgba(0, 0, 0, 0.12);
+    }
+    .cat-card:active {
+      transform: translateY(2px) scale(0.97);
+    }
+
+    /* ============================================================
+       KEYFRAME ANIMATIONS
+       ============================================================ */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-16px) rotate(8deg); }
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.75); opacity: 0; }
+      70% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes cardBounce {
+      0% { transform: scale(1); }
+      35% { transform: scale(1.1) rotate(-2deg); }
+      65% { transform: scale(0.96) rotate(2deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+    @keyframes reminderPulse {
+      0%, 100% { box-shadow: 0 0 0 0 var(--glow-color); }
+      50% { box-shadow: 0 0 0 18px rgba(255, 255, 255, 0); }
+    }
+    @keyframes letterJump {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-12px) scale(1.18); }
+    }
+    @keyframes noteFloatUp {
+      0% { transform: translateY(0) scale(0.6) rotate(-10deg); opacity: 0; }
+      20% { opacity: 1; }
+      100% { transform: translateY(-110px) scale(1.3) rotate(18deg); opacity: 0; }
+    }
+    @keyframes confettiFall {
+      0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+      100% { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(0.4); opacity: 0; }
+    }
+    @keyframes speechPop {
+      0% { transform: translate(-50%, 8px) scale(0.5); opacity: 0; }
+      20% { transform: translate(-50%, -8px) scale(1.1); opacity: 1; }
+      80% { transform: translate(-50%, -14px) scale(1); opacity: 1; }
+      100% { transform: translate(-50%, -26px) scale(0.8); opacity: 0; }
+    }
+    @keyframes danceBeat {
+      0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+      50% { transform: translateY(-18px) rotate(var(--tilt, 8deg)) scale(1.12); }
+    }
+
+    .animate-float-slow { animation: floatSlow 6s ease-in-out infinite; }
+    .animate-pop-in { animation: popIn 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+    .animate-card-bounce { animation: cardBounce 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .animate-reminder-pulse { animation: reminderPulse 1.1s ease-in-out 2; }
+
+    /* Letter Tile Active State */
+    .letter-tile {
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+    }
+    .letter-tile.active-letter {
+      background-color: var(--accent) !important;
+      color: #1e293b !important;
+      transform: translateY(-10px) scale(1.18);
+      box-shadow: 0 8px 18px var(--glow-color);
+      border-color: #ffffff !important;
+      z-index: 10;
+    }
+
+    /* Floating Background Decorations */
+    .bg-deco-item {
+      position: fixed;
+      pointer-events: none;
+      opacity: 0.22;
+      z-index: 0;
+      animation: floatSlow 7s ease-in-out infinite;
+    }
+
+    /* Confetti Particle */
+    .confetti-particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      font-size: 1.5rem;
+      animation: confettiFall 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Floating Musical Note */
+    .stage-note {
+      position: absolute;
+      pointer-events: none;
+      font-size: 1.75rem;
+      animation: noteFloatUp 1.35s ease-out forwards;
+      z-index: 20;
+    }
+
+    /* Animal Speech Bubble */
+    .animal-bubble {
+      position: absolute;
+      top: -28px;
+      left: 50%;
+      white-space: nowrap;
+      pointer-events: none;
+      animation: speechPop 0.95s ease-out forwards;
+      z-index: 30;
+    }
+
+    /* Stage Spotlight Cone */
+    .spotlight {
+      position: absolute;
+      top: -20px;
+      width: 140px;
+      height: 240px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 100%);
+      clip-path: polygon(35% 0%, 65% 0%, 100% 100%, 0% 100%);
+      pointer-events: none;
+    }
+
+    /* Karaoke Lyric Line */
+    .lyric-line {
+      transition: all 0.25s ease;
+    }
+    .lyric-line.active-lyric {
+      transform: scale(1.06);
+      font-weight: 700;
+      color: var(--primary-dark);
+      background-color: var(--primary-light);
+      box-shadow: 0 4px 12px var(--glow-color);
+    }
+
+    /* Hide scrollbar cleanly on horizontal lyric/song containers if needed */
+    .custom-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.16); border-radius: 999px; }
+    .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+
+    /* ============================================================
+       MULTI-DEVICE: PHONE, LAPTOP & SMART TV (1080p/4K) + D-PAD FOCUS
+       ============================================================ */
+    /* High-visibility living-room focus ring for TV Remote & Keyboard */
+    button:focus-visible,
+    [tabindex="0"]:focus-visible,
+    .tv-focused {
+      outline: 5px solid #facc15 !important;
+      outline-offset: 4px !important;
+      box-shadow: 0 0 0 9px var(--glow-color), 0 14px 28px rgba(0, 0, 0, 0.22) !important;
+      transform: translateY(-3px) scale(1.03);
+      z-index: 30;
+    }
+
+    /* Smart TV Mode (Auto-enabled >= 1600px or via TV Mode header toggle) */
+    body.tv-mode {
+      font-size: clamp(18px, 1.15vw, 24px);
+    }
+    body.tv-mode header {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+    }
+    body.tv-mode #header-inner {
+      max-width: 1800px;
+      padding-top: 0.9rem;
+      padding-bottom: 0.9rem;
+    }
+    body.tv-mode #main-container {
+      max-width: 1800px;
+      padding: 2rem 3.5rem 4.5rem 3.5rem; /* TV Overscan Safe-Area */
+    }
+    body.tv-mode #category-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+    @media (min-width: 1920px) {
+      body.tv-mode #category-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+    }
+    body.tv-mode .cat-card {
+      min-height: 210px;
+      padding: 1.75rem;
+    }
+    body.tv-mode #fc-card-shell {
+      max-width: 1280px;
+      padding: 2.25rem 2.75rem;
+    }
+    body.tv-mode #fc-visual-card {
+      min-height: 330px;
+    }
+    body.tv-mode #fc-word-title {
+      font-size: clamp(3rem, 4vw, 4.75rem);
+    }
+    body.tv-mode .letter-tile {
+      width: 4.25rem;
+      height: 4.75rem;
+      font-size: 2.25rem;
+    }
+    body.tv-mode .btn-chunky {
+      padding-top: 1.1rem;
+      padding-bottom: 1.1rem;
+    }
+
+    /* Phone-specific thumb-friendly refinements (< 640px) */
+    @media (max-width: 639px) {
+      #fc-nav-controls {
+        position: sticky;
+        bottom: 0.5rem;
+        z-index: 25;
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(8px);
+        padding: 0.5rem;
+        border-radius: 1.75rem;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+      }
+    }
+  </style>
+</head>
+
+<body class="theme-boy text-slate-800 antialiased selection:bg-yellow-300">
+  <!-- Floating Background Theme Icons (Populated dynamically by Boy/Girl theme) -->
+  <div id="bg-decorations" aria-hidden="true"></div>
+
+  <!-- ============================================================
+       TOP STICKY NAVIGATION HEADER
+       ============================================================ -->
+  <header class="sticky top-0 z-40 backdrop-blur-md border-b-4 theme-border shadow-md transition-colors duration-300" style="background: var(--header-bg);">
+    <div id="header-inner" class="max-w-7xl mx-auto px-3 sm:px-5 py-2.5 flex flex-wrap items-center justify-between gap-2">
+      <!-- Brand / Home Button -->
+      <button onclick="navigateTo('home')" class="flex items-center gap-2 sm:gap-2.5 group focus:outline-none text-left rounded-2xl p-1">
+        <div id="brand-icon-badge" class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl theme-primary-bg text-white flex items-center justify-center text-2xl sm:text-3xl shadow-md group-hover:scale-110 transition-transform">
+          🚀
+        </div>
+        <div>
+          <h1 class="text-lg sm:text-2xl font-bold tracking-tight theme-primary-text leading-tight">
+            KiddoWorld <span class="text-amber-500">English</span>
+          </h1>
+          <p id="brand-subtitle" class="text-xs font-medium text-slate-500 hidden md:block">
+            Phone • Laptop • Smart TV Ready!
+          </p>
+        </div>
+      </button>
+
+      <!-- Quick Section Navigation -->
+      <nav class="flex items-center gap-1.5 sm:gap-2 order-3 lg:order-2 w-full lg:w-auto justify-center pt-1 lg:pt-0">
+        <button onclick="navigateTo('home')" id="nav-home" class="btn-chunky flex-1 sm:flex-initial justify-center px-3 sm:px-4 py-2 rounded-2xl text-sm sm:text-base font-bold bg-white border-2 theme-border text-slate-700 flex items-center gap-1.5">
+          <span>🏠</span><span>Home</span>
+        </button>
+        <button onclick="navigateTo('studio')" id="nav-studio" class="btn-chunky flex-1 sm:flex-initial justify-center px-3 sm:px-4 py-2 rounded-2xl text-sm sm:text-base font-bold bg-gradient-to-r from-amber-400 to-orange-400 text-white flex items-center gap-1.5">
+          <span>🎤</span><span>Studio</span>
+        </button>
+        <button onclick="navigateTo('songs')" id="nav-songs" class="btn-chunky flex-1 sm:flex-initial justify-center px-3 sm:px-4 py-2 rounded-2xl text-sm sm:text-base font-bold bg-gradient-to-r from-emerald-400 to-teal-500 text-white flex items-center gap-1.5">
+          <span>🎵</span><span>Songs</span>
+        </button>
+      </nav>
+
+      <!-- Boy / Girl Theme Selector + Smart TV Mode Toggle -->
+      <div class="flex items-center gap-1.5 sm:gap-2 order-2 lg:order-3">
+        <div class="flex items-center bg-slate-100 p-1 rounded-2xl border-2 border-slate-200 shadow-inner">
+          <button id="btn-theme-boy" onclick="setTheme('boy', true)" class="px-2.5 sm:px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1 transition-all bg-sky-500 text-white shadow">
+            <span>🚀</span><span>Boy</span>
+          </button>
+          <button id="btn-theme-girl" onclick="setTheme('girl', true)" class="px-2.5 sm:px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1 transition-all text-slate-600 hover:text-pink-600">
+            <span>🦄</span><span>Girl</span>
+          </button>
+        </div>
+
+        <!-- TV Mode Toggle (Auto-activates >= 1600px or clickable anytime) -->
+        <button id="btn-tv-mode" onclick="toggleTvMode()" title="Toggle Large-Screen Smart TV Mode & D-Pad Remote Navigation"
+                class="px-2.5 sm:px-3 py-2 rounded-2xl text-xs sm:text-sm font-bold border-2 border-slate-200 bg-slate-100 text-slate-700 hover:bg-amber-100 flex items-center gap-1 transition-all">
+          <span>📺</span><span class="hidden sm:inline">TV Mode</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Toast / Gentle Feedback Banner (Never uses alert()) -->
+  <div id="toast-banner" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 hidden px-5 py-3 rounded-2xl bg-slate-900/90 text-white font-semibold text-sm sm:text-base shadow-2xl border-2 border-white/20 max-w-[90vw] text-center"></div>
+
+  <!-- ============================================================
+       MAIN CONTENT CONTAINER
+       ============================================================ -->
+  <main id="main-container" class="relative z-10 max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-8 pb-16">
+
+    <!-- ==================== VIEW 1: HOME MENU ==================== -->
+    <section id="view-home" class="space-y-6 sm:space-y-7 animate-pop-in">
+      <!-- Hero Welcome Banner -->
+      <div class="bg-white/90 backdrop-blur rounded-3xl p-4 sm:p-7 border-4 theme-border shadow-xl flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-5">
+        <div class="text-center md:text-left space-y-1.5 sm:space-y-2">
+          <div id="hero-badge" class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs sm:text-sm font-bold theme-primary-light-bg theme-primary-text">
+            <span>⭐</span><span>Ready to Learn English?</span>
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-bold text-slate-800 leading-tight">
+            Pick a Fun World to Explore!
+          </h2>
+          <p class="text-slate-600 text-sm sm:text-lg max-w-2xl">
+            Tap any category to see giant flashcards, hear English words spelled letter-by-letter, or jump into our singing &amp; dancing stages!
+          </p>
+        </div>
+
+        <!-- Quick Jump Feature Buttons -->
+        <div class="grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-2.5 sm:gap-3 w-full md:w-auto shrink-0">
+          <button onclick="navigateTo('studio')" class="btn-chunky px-4 sm:px-5 py-3 sm:py-3.5 rounded-3xl bg-gradient-to-br from-amber-400 to-orange-500 text-white font-bold text-sm sm:text-lg flex items-center justify-center gap-2">
+            <span class="text-xl sm:text-2xl">🎤</span>
+            <div class="text-left leading-tight">
+              <div>Sing &amp; Speak</div>
+              <div class="text-[11px] sm:text-xs font-medium text-amber-100">Voice Stage</div>
+            </div>
+          </button>
+          <button onclick="navigateTo('songs')" class="btn-chunky px-4 sm:px-5 py-3 sm:py-3.5 rounded-3xl bg-gradient-to-br from-emerald-400 to-teal-500 text-white font-bold text-sm sm:text-lg flex items-center justify-center gap-2">
+            <span class="text-xl sm:text-2xl">🎶</span>
+            <div class="text-left leading-tight">
+              <div>Kids Songs</div>
+              <div class="text-[11px] sm:text-xs font-medium text-emerald-100">8 Sing-Alongs</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- 8 Core Learning Categories Grid (2 cols on Phone, 3-4 on Laptop, 4-5 on TV) -->
+      <div>
+        <div class="flex items-center justify-between mb-3.5 sm:mb-4 px-1">
+          <h3 class="text-xl sm:text-3xl font-bold text-slate-800 flex items-center gap-2">
+            <span id="cat-heading-icon">🦕</span>
+            <span>Learning Categories</span>
+          </h3>
+          <span class="text-xs sm:text-sm font-bold px-3 py-1 rounded-full bg-white/80 text-slate-600 border-2 theme-border">
+            133 Words Total!
+          </span>
+        </div>
+
+        <div id="category-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 2: FLASHCARD LEARNING PLAYER ==================== -->
+    <section id="view-flashcard" class="hidden space-y-4 sm:space-y-5 animate-pop-in">
+      <!-- Top Bar: Back, Category Title, Progress, Spell Mode & Pause Timer -->
+      <div class="bg-white/90 backdrop-blur rounded-3xl p-3 sm:p-4 border-4 theme-border shadow-lg flex flex-wrap items-center justify-between gap-2.5 sm:gap-3">
+        <button onclick="navigateTo('home')" class="btn-chunky px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm sm:text-base flex items-center gap-1.5">
+          <span>⬅️</span><span>Home</span>
+        </button>
+
+        <div class="text-center flex-1 min-w-[130px]">
+          <div id="fc-cat-title" class="text-lg sm:text-2xl font-bold theme-primary-text">Animals</div>
+          <div id="fc-progress-text" class="text-xs sm:text-sm font-bold text-slate-500">Card 1 / 20</div>
+        </div>
+
+        <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap justify-center w-full sm:w-auto">
+          <!-- Spell + Say vs Say Only Toggle -->
+          <button id="btn-spell-mode" onclick="toggleSpellMode()" class="btn-chunky flex-1 sm:flex-initial justify-center px-3 sm:px-3.5 py-2 rounded-2xl bg-indigo-500 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5">
+            <span>🔤</span><span id="spell-mode-label">Spell + Say</span>
+          </button>
+          <!-- Pause / Resume 20s Timer -->
+          <button id="btn-pause-timer" onclick="toggleTimerPause()" class="btn-chunky flex-1 sm:flex-initial justify-center px-3 sm:px-3.5 py-2 rounded-2xl bg-amber-400 text-amber-950 font-bold text-xs sm:text-sm flex items-center gap-1.5">
+            <span id="pause-timer-icon">⏸️</span><span id="pause-timer-label">Pause Timer</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Flashcard Stage -->
+      <div id="fc-card-shell" class="max-w-3xl mx-auto bg-white/95 backdrop-blur rounded-[2rem] sm:rounded-[2.2rem] p-4 sm:p-8 border-4 theme-border shadow-2xl relative overflow-hidden">
+        <!-- 20-Second Smart Timer Row (Circular Ring + Linear Bar) -->
+        <div class="flex items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-5">
+          <div class="flex-1">
+            <div class="flex items-center justify-between text-xs sm:text-sm font-bold text-slate-500 mb-1.5">
+              <span id="timer-status-text">Smart Auto-Next Timer</span>
+              <span id="timer-seconds-badge" class="px-2.5 py-0.5 rounded-full theme-primary-light-bg theme-primary-text font-bold">20s</span>
+            </div>
+            <div class="w-full h-3 sm:h-3.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+              <div id="timer-bar-fill" class="h-full rounded-full theme-primary-bg transition-all duration-300" style="width: 100%;"></div>
+            </div>
+          </div>
+
+          <!-- Circular SVG Countdown Ring -->
+          <div class="relative w-12 h-12 sm:w-14 sm:h-14 shrink-0 flex items-center justify-center">
+            <svg class="w-full h-full -rotate-90" viewBox="0 0 60 60">
+              <circle cx="30" cy="30" r="25" fill="none" stroke="#e2e8f0" stroke-width="6"></circle>
+              <circle id="timer-ring-circle" cx="30" cy="30" r="25" fill="none" stroke="var(--primary)" stroke-width="6" stroke-linecap="round" stroke-dasharray="157.08" stroke-dashoffset="0" style="transition: stroke-dashoffset 0.3s linear;"></circle>
+            </svg>
+            <span id="timer-ring-number" class="absolute text-sm sm:text-base font-bold text-slate-700">20</span>
+          </div>
+        </div>
+
+        <!-- Giant Clickable & Swipeable Visual Card -->
+        <div id="fc-visual-card" onclick="handleCardTap()" role="button" tabindex="0" aria-label="Tap to hear word"
+             class="cursor-pointer rounded-3xl p-5 sm:p-8 theme-primary-light-bg border-4 border-white shadow-inner flex flex-col items-center justify-center min-h-[190px] sm:min-h-[260px] transition-transform hover:scale-[1.01] active:scale-[0.98] relative">
+          <div id="fc-visual-container" class="flex flex-col items-center justify-center">
+            <!-- Emoji / Inline SVG / Color Swatch / Flag / Counter Dots -->
+          </div>
+          <span class="absolute bottom-2.5 right-3 text-[11px] sm:text-xs font-bold text-slate-500/80 bg-white/80 px-2.5 py-1 rounded-full">
+            👆 Tap or Swipe!
+          </span>
+        </div>
+
+        <!-- Word & Phonetic Display -->
+        <div class="text-center mt-4 sm:mt-5 space-y-1">
+          <h2 id="fc-word-title" class="text-3xl sm:text-5xl font-bold text-slate-800 tracking-wide">
+            Lion
+          </h2>
+          <p id="fc-phonetic" class="text-sm sm:text-lg font-semibold text-slate-500">
+            / LIE-uhn /
+          </p>
+        </div>
+
+        <!-- Individual Letter Tiles (Light up 1-by-1 while spelling) -->
+        <div id="fc-letter-tiles" class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2.5 mt-4 sm:mt-5 min-h-[52px]">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- Large Chunky Navigation Controls (Thumb-sticky on Phone, Giant on TV) -->
+        <div id="fc-nav-controls" class="grid grid-cols-3 gap-2.5 sm:gap-4 mt-6 sm:mt-7">
+          <button id="btn-fc-prev" onclick="prevCard()" class="btn-chunky py-3.5 sm:py-5 rounded-2xl sm:rounded-3xl bg-gradient-to-b from-slate-200 to-slate-300 text-slate-800 font-bold text-base sm:text-xl flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5">
+            <span class="text-xl sm:text-2xl">⬅️</span><span>Back</span>
+          </button>
+          <button id="btn-fc-repeat" onclick="repeatCard()" class="btn-chunky py-3.5 sm:py-5 rounded-2xl sm:rounded-3xl bg-gradient-to-b from-amber-400 to-orange-500 text-white font-bold text-base sm:text-xl flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5">
+            <span class="text-xl sm:text-2xl">🔊</span><span>Repeat</span>
+          </button>
+          <button id="btn-fc-next" onclick="nextCard()" class="btn-chunky py-3.5 sm:py-5 rounded-2xl sm:rounded-3xl bg-gradient-to-b from-emerald-400 to-teal-500 text-white font-bold text-base sm:text-xl flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5">
+            <span>Next</span><span class="text-xl sm:text-2xl">➡️</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 3: SING & SPEAK STUDIO (VOICE-REACTIVE STAGE) ==================== -->
+    <section id="view-studio" class="hidden space-y-4 sm:space-y-5 animate-pop-in">
+      <!-- Top Studio Controls Bar -->
+      <div class="bg-white/90 backdrop-blur rounded-3xl p-4 border-4 theme-border shadow-lg flex flex-wrap items-center justify-between gap-3">
+        <button onclick="navigateTo('home')" class="btn-chunky px-4 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold flex items-center gap-2">
+          <span>⬅️</span><span>Home</span>
+        </button>
+
+        <div class="text-center flex-1 min-w-[180px]">
+          <h2 class="text-2xl sm:text-3xl font-bold theme-primary-text">🎤 Sing &amp; Speak Studio</h2>
+          <p class="text-xs sm:text-sm font-medium text-slate-500">Speak, sing, or clap to make the animals dance — or tap Demo Beat!</p>
+        </div>
+
+        <div class="flex items-center gap-2 flex-wrap justify-center w-full sm:w-auto">
+          <button id="btn-start-mic" onclick="toggleMicrophone()" class="btn-chunky flex-1 sm:flex-initial justify-center px-4 py-2.5 rounded-2xl bg-gradient-to-r from-rose-500 to-pink-600 text-white font-bold text-sm sm:text-base flex items-center gap-2">
+            <span id="mic-btn-icon">🎤</span><span id="mic-btn-text">Start Mic</span>
+          </button>
+          <button id="btn-demo-beat" onclick="toggleDemoBeat()" class="btn-chunky flex-1 sm:flex-initial justify-center px-4 py-2.5 rounded-2xl bg-gradient-to-r from-amber-400 to-orange-500 text-white font-bold text-sm sm:text-base flex items-center gap-2">
+            <span id="demo-btn-icon">🥁</span><span id="demo-btn-text">Demo Beat</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Voice-Reactive Dancing Stage -->
+      <div class="theme-stage-bg rounded-[2.2rem] p-5 sm:p-8 border-4 border-white shadow-2xl relative overflow-hidden min-h-[380px] sm:min-h-[430px] flex flex-col justify-between">
+        <div class="spotlight left-[12%]"></div>
+        <div class="spotlight left-[44%]"></div>
+        <div class="spotlight right-[12%]"></div>
+        <div id="studio-notes-layer" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
+
+        <!-- Status Pill + Real-Time Volume Meter -->
+        <div class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-3 bg-black/25 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/15">
+          <span id="studio-status-pill" class="text-white font-bold text-sm sm:text-base">
+            Ready to Jam! Tap Start Mic or Demo Beat
+          </span>
+          <div class="w-full sm:w-64 h-4 bg-white/20 rounded-full overflow-hidden p-0.5">
+            <div id="studio-vol-meter" class="h-full rounded-full bg-gradient-to-r from-emerald-400 via-yellow-300 to-pink-500 transition-all duration-75" style="width: 4%;"></div>
+          </div>
+        </div>
+
+        <!-- 5 Voice-Reactive Tappable Dancing Animals -->
+        <div class="relative z-10 grid grid-cols-5 gap-2 sm:gap-4 items-end justify-items-center my-6 sm:my-8">
+          <button onclick="tapStageAnimal('monkey', this)" class="studio-animal relative flex flex-col items-center focus:outline-none cursor-pointer">
+            <div class="text-5xl sm:text-7xl md:text-8xl drop-shadow-2xl transition-transform duration-75">🐒</div>
+            <span class="mt-2 px-2.5 py-0.5 rounded-full bg-white/20 text-white text-xs sm:text-sm font-bold">Monkey</span>
+          </button>
+          <button onclick="tapStageAnimal('dog', this)" class="studio-animal relative flex flex-col items-center focus:outline-none cursor-pointer">
+            <div class="text-5xl sm:text-7xl md:text-8xl drop-shadow-2xl transition-transform duration-75">🐶</div>
+            <span class="mt-2 px-2.5 py-0.5 rounded-full bg-white/20 text-white text-xs sm:text-sm font-bold">Dog</span>
+          </button>
+          <button onclick="tapStageAnimal('cat', this)" class="studio-animal relative flex flex-col items-center focus:outline-none cursor-pointer">
+            <div class="text-5xl sm:text-7xl md:text-8xl drop-shadow-2xl transition-transform duration-75">🐱</div>
+            <span class="mt-2 px-2.5 py-0.5 rounded-full bg-white/20 text-white text-xs sm:text-sm font-bold">Cat</span>
+          </button>
+          <button onclick="tapStageAnimal('bunny', this)" class="studio-animal relative flex flex-col items-center focus:outline-none cursor-pointer">
+            <div class="text-5xl sm:text-7xl md:text-8xl drop-shadow-2xl transition-transform duration-75">🐰</div>
+            <span class="mt-2 px-2.5 py-0.5 rounded-full bg-white/20 text-white text-xs sm:text-sm font-bold">Bunny</span>
+          </button>
+          <button onclick="tapStageAnimal('bear', this)" class="studio-animal relative flex flex-col items-center focus:outline-none cursor-pointer">
+            <div class="text-5xl sm:text-7xl md:text-8xl drop-shadow-2xl transition-transform duration-75">🐻</div>
+            <span class="mt-2 px-2.5 py-0.5 rounded-full bg-white/20 text-white text-xs sm:text-sm font-bold">Bear</span>
+          </button>
+        </div>
+
+        <!-- Live Frequency Equalizer Bars + Tap Hint -->
+        <div class="relative z-10 flex flex-col items-center gap-2">
+          <div id="studio-eq-bars" class="flex items-end justify-center gap-1.5 sm:gap-2 h-14 px-4 py-2 rounded-2xl bg-black/25 backdrop-blur-sm border border-white/10">
+            <!-- Populated by initStudioEqualizer() -->
+          </div>
+          <p class="text-xs sm:text-sm font-bold text-white/85">👆 Tap any animal on stage for fun sound effects!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 4: KIDS SING-ALONG SONGS (8 SONGS) ==================== -->
+    <section id="view-songs" class="hidden space-y-4 sm:space-y-5 animate-pop-in">
+      <div class="bg-white/90 backdrop-blur rounded-3xl p-4 border-4 theme-border shadow-lg flex flex-wrap items-center justify-between gap-3">
+        <button onclick="navigateTo('home')" class="btn-chunky px-4 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold flex items-center gap-2">
+          <span>⬅️</span><span>Home</span>
+        </button>
+        <div class="text-center flex-1">
+          <h2 class="text-2xl sm:text-3xl font-bold theme-primary-text">🎶 Kids Sing-Along Songs</h2>
+          <p class="text-sm font-medium text-slate-500">Pick a classic song, read the karaoke lyrics, and tap the dancing animals!</p>
+        </div>
+        <!-- Tempo Selector -->
+        <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-2xl border border-slate-200">
+          <button onclick="setSongTempo(0.85)" id="tempo-slow" class="px-2.5 py-1 rounded-xl text-xs font-bold text-slate-600">🐢 Slow</button>
+          <button onclick="setSongTempo(1.0)" id="tempo-normal" class="px-2.5 py-1 rounded-xl text-xs font-bold bg-emerald-500 text-white shadow">🎵 Normal</button>
+          <button onclick="setSongTempo(1.2)" id="tempo-fast" class="px-2.5 py-1 rounded-xl text-xs font-bold text-slate-600">🐇 Fast</button>
+        </div>
+      </div>
+
+      <!-- Song Selector Grid (8 Classic Songs) -->
+      <div id="song-selector-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Player + Karaoke + Dancing Animals Split Layout -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <!-- Left: Dancing Stage & Interactive Animal SFX -->
+        <div class="lg:col-span-6 theme-stage-bg rounded-[2.2rem] p-5 sm:p-6 border-4 border-white shadow-2xl relative overflow-hidden flex flex-col justify-between min-h-[340px]">
+          <div class="spotlight left-[15%]"></div>
+          <div class="spotlight right-[15%]"></div>
+          <div id="song-notes-layer" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
+
+          <div class="relative z-10 text-center">
+            <span id="song-now-playing-badge" class="inline-block px-4 py-1.5 rounded-full bg-white/20 text-white font-bold text-sm backdrop-blur-sm">
+              🎵 Ready to Sing!
+            </span>
+          </div>
+
+          <!-- 4 Synced Dancing Animals -->
+          <div class="relative z-10 grid grid-cols-4 gap-2 items-end justify-items-center py-6">
+            <button onclick="tapStageAnimal('monkey', this)" class="song-dancer relative flex flex-col items-center focus:outline-none cursor-pointer" style="--tilt: -10deg;">
+              <div class="text-5xl sm:text-7xl drop-shadow-xl transition-transform duration-150">🐒</div>
+              <span class="mt-1.5 px-2 py-0.5 rounded-full bg-white/20 text-white text-xs font-bold">Monkey</span>
+            </button>
+            <button onclick="tapStageAnimal('dog', this)" class="song-dancer relative flex flex-col items-center focus:outline-none cursor-pointer" style="--tilt: 10deg;">
+              <div class="text-5xl sm:text-7xl drop-shadow-xl transition-transform duration-150">🐶</div>
+              <span class="mt-1.5 px-2 py-0.5 rounded-full bg-white/20 text-white text-xs font-bold">Dog</span>
+            </button>
+            <button onclick="tapStageAnimal('cat', this)" class="song-dancer relative flex flex-col items-center focus:outline-none cursor-pointer" style="--tilt: -10deg;">
+              <div class="text-5xl sm:text-7xl drop-shadow-xl transition-transform duration-150">🐱</div>
+              <span class="mt-1.5 px-2 py-0.5 rounded-full bg-white/20 text-white text-xs font-bold">Cat</span>
+            </button>
+            <button onclick="tapStageAnimal('duck', this)" class="song-dancer relative flex flex-col items-center focus:outline-none cursor-pointer" style="--tilt: 10deg;">
+              <div class="text-5xl sm:text-7xl drop-shadow-xl transition-transform duration-150">🦆</div>
+              <span class="mt-1.5 px-2 py-0.5 rounded-full bg-white/20 text-white text-xs font-bold">Duck</span>
+            </button>
+          </div>
+
+          <!-- Interactive Sound-Effect Pads (Bark, Meow, Quack, Giggle, Drum, Boing) -->
+          <div class="relative z-10 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 pt-2.5 border-t border-white/15">
+            <button onclick="playBonusSfx('bark', this)" class="btn-chunky px-2.5 py-1.5 rounded-xl bg-amber-300 text-amber-950 font-bold text-xs sm:text-sm">🐶 Bark</button>
+            <button onclick="playBonusSfx('meow', this)" class="btn-chunky px-2.5 py-1.5 rounded-xl bg-rose-300 text-rose-950 font-bold text-xs sm:text-sm">🐱 Meow</button>
+            <button onclick="playBonusSfx('quack', this)" class="btn-chunky px-2.5 py-1.5 rounded-xl bg-yellow-300 text-yellow-950 font-bold text-xs sm:text-sm">🦆 Quack</button>
+            <button onclick="playBonusSfx('giggle', this)" class="btn-chunky px-2.5 py-1.5 rounded-xl bg-purple-300 text-purple-950 font-bold text-xs sm:text-sm">🐒 Giggle</button>
+            <button onclick="playBonusSfx('drum', this)" class="btn-chunky px-2.5 py-1.5 rounded-xl bg-amber-400 text-amber-950 font-bold text-xs sm:text-sm">🥁 Drum</button>
+            <button onclick="playBonusSfx('boing', this)" class="btn-chunky px-2.5 py-1.5 rounded-xl bg-pink-400 text-white font-bold text-xs sm:text-sm">🎈 Boing</button>
+          </div>
+        </div>
+
+        <!-- Right: Controls & Synchronized Karaoke Lyrics -->
+        <div class="lg:col-span-6 bg-white/95 backdrop-blur rounded-[2.2rem] p-5 sm:p-6 border-4 theme-border shadow-xl flex flex-col justify-between gap-4">
+          <!-- Selected Song Header & Progress -->
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <h3 id="song-active-title" class="text-2xl font-bold text-slate-800">🔤 ABC Song</h3>
+              <span id="song-progress-label" class="text-xs font-bold px-2.5 py-1 rounded-full theme-primary-light-bg theme-primary-text">0%</span>
+            </div>
+            <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden border border-slate-200 mb-4">
+              <div id="song-progress-bar" class="h-full theme-primary-bg transition-all duration-200" style="width: 0%;"></div>
+            </div>
+
+            <!-- Play / Pause / Stop Buttons -->
+            <div class="flex items-center gap-3">
+              <button id="btn-song-play" onclick="togglePlaySong()" class="btn-chunky flex-1 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-400 to-teal-500 text-white font-bold text-lg flex items-center justify-center gap-2">
+                <span id="song-play-icon">▶️</span><span id="song-play-text">Play Song</span>
+              </button>
+              <button onclick="stopSong()" class="btn-chunky px-5 py-3.5 rounded-2xl bg-rose-500 text-white font-bold text-lg flex items-center justify-center gap-1.5">
+                <span>⏹️</span><span>Stop</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Karaoke Lyrics Box -->
+          <div id="karaoke-box" class="bg-slate-50 rounded-2xl p-4 border-2 border-slate-200 h-56 overflow-y-auto custom-scroll space-y-2 text-center">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       JAVASCRIPT APPLICATION ENGINE
+       ============================================================ -->
+  <script>
+    /* ============================================================
+       1. CUSTOM CUTE INLINE SVGs (Zero External Image Dependencies)
+       ============================================================ */
+    const CUSTOM_SVGS = {
+      // Fruits without standard emojis
+      papaya: `
+        <svg viewBox="0 0 120 120" class="w-32 h-32 sm:w-40 sm:h-40 drop-shadow-md">
+          <ellipse cx="60" cy="64" rx="34" ry="46" fill="#84cc16" stroke="#4d7c0f" stroke-width="4"/>
+          <ellipse cx="60" cy="66" rx="26" ry="38" fill="#fb923c"/>
+          <ellipse cx="60" cy="68" rx="14" ry="24" fill="#ea580c"/>
+          <circle cx="56" cy="56" r="3.5" fill="#1e293b"/>
+          <circle cx="64" cy="60" r="3.5" fill="#1e293b"/>
+          <circle cx="57" cy="68" r="3.5" fill="#1e293b"/>
+          <circle cx="64" cy="74" r="3.5" fill="#1e293b"/>
+          <circle cx="58" cy="80" r="3.5" fill="#1e293b"/>
+          <path d="M54 18 Q60 6 68 18" fill="none" stroke="#4d7c0f" stroke-width="5" stroke-linecap="round"/>
+        </svg>`,
+      dragonfruit: `
+        <svg viewBox="0 0 120 120" class="w-32 h-32 sm:w-40 sm:h-40 drop-shadow-md">
+          <path d="M60 12 L48 30 L32 22 L38 42 L20 52 L34 66 L24 84 L44 92 L60 108 L76 92 L96 84 L86 66 L100 52 L82 42 L88 22 L72 30 Z" fill="#ec4899" stroke="#be185d" stroke-width="3.5" stroke-linejoin="round"/>
+          <ellipse cx="60" cy="62" rx="25" ry="30" fill="#fff1f2"/>
+          <circle cx="52" cy="50" r="2.6" fill="#1e293b"/><circle cx="67" cy="52" r="2.6" fill="#1e293b"/>
+          <circle cx="60" cy="62" r="2.6" fill="#1e293b"/><circle cx="50" cy="68" r="2.6" fill="#1e293b"/>
+          <circle cx="70" cy="69" r="2.6" fill="#1e293b"/><circle cx="59" cy="78" r="2.6" fill="#1e293b"/>
+          <path d="M54 20 L60 8 L66 20" fill="#84cc16" stroke="#4d7c0f" stroke-width="2.5"/>
+        </svg>`,
+      durian: `
+        <svg viewBox="0 0 120 120" class="w-32 h-32 sm:w-40 sm:h-40 drop-shadow-md">
+          <polygon points="60,10 72,22 88,18 90,34 106,42 98,58 108,74 92,84 90,100 72,98 60,112 48,98 30,100 28,84 12,74 22,58 14,42 30,34 32,18 48,22" fill="#84cc16" stroke="#4d7c0f" stroke-width="3.5" stroke-linejoin="round"/>
+          <ellipse cx="60" cy="62" rx="28" ry="30" fill="#bef264"/>
+          <ellipse cx="50" cy="62" rx="10" ry="18" fill="#fef08a" stroke="#eab308" stroke-width="2.5"/>
+          <ellipse cx="70" cy="62" rx="10" ry="18" fill="#fef08a" stroke="#eab308" stroke-width="2.5"/>
+          <circle cx="50" cy="58" r="2.5" fill="#422006"/><circle cx="70" cy="58" r="2.5" fill="#422006"/>
+          <path d="M56 72 Q60 76 64 72" fill="none" stroke="#422006" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>`,
+      mangosteen: `
+        <svg viewBox="0 0 120 120" class="w-32 h-32 sm:w-40 sm:h-40 drop-shadow-md">
+          <circle cx="60" cy="68" r="38" fill="#6b21a8" stroke="#3b0764" stroke-width="4"/>
+          <circle cx="60" cy="68" r="23" fill="#faf5ff"/>
+          <path d="M60 45 L60 91 M40 57 L80 79 M80 57 L40 79" stroke="#e9d5ff" stroke-width="2.5"/>
+          <path d="M36 32 Q48 22 60 32 Q72 22 84 32 Q72 42 60 36 Q48 42 36 32 Z" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
+          <path d="M60 28 L60 14" stroke="#15803d" stroke-width="5" stroke-linecap="round"/>
+        </svg>`,
+
+      // Electronics & Electrical Items
+      fan: `
+        <svg viewBox="0 0 120 120" class="w-32 h-32 sm:w-40 sm:h-40 drop-shadow-md">
+          <rect x="34" y="96" width="52" height="12" rx="6" fill="#0284c7"/>
+          <rect x="55" y="76" width="10" height="22" fill="#38bdf8"/>
+          <circle cx="60" cy="48" r="34" fill="#e0f2fe" stroke="#0284c7" stroke-width="5"/>
+          <ellipse cx="60" cy="28" rx="9" ry="15" fill="#38bdf8"/>
+          <ellipse cx="60" cy="68" rx="9" ry="15" fill="#38bdf8"/>
+          <ellipse cx="40" cy="48" rx="15" ry="9" fill="#0ea5e9"/>
+          <ellipse cx="80" cy="48" rx="15" ry="9" fill="#0ea5e9"/>
+          <circle cx="60" cy="48" r="9" fill="#facc15" stroke="#ca8a04" stroke-width="3"/>
+        </svg>`,
+      fridge: `
+        <svg viewBox="0 0 120 120" class="w-32 h-32 sm:w-40 sm:h-40 drop-shadow-md">
+          <rect x="28" y="14" width="64" height="94" rx="12" fill="#e0f2fe" stroke="#0284c7" stroke-width="4.5"/>
+          <line x1="28" y1="48" x2="92" y2="48" stroke="#0284c7" stroke-width="4"/>
+          <rect x="76" y="24" width="6" height="16" rx="3" fill="#0ea5e9"/>
+          <rect x="76" y="58" width="6" height="26" rx="3" fill="#0ea5e9"/>
+          <circle cx="48" cy="31" r="3.5" fill="#0284c7"/><circle cx="62" cy="31" r="3.5" fill="#0284c7"/>
+          <path d="M51 37 Q55 41 59 37" fill="none" stroke="#0284c7" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>`,
+      washingmachine: `
+        <svg viewBox="0 0 120 120" class="w-32 h-32 sm:w-40 sm:h-40 drop-shadow-md">
+          <rect x="22" y="16" width="76" height="90" rx="12" fill="#f8fafc" stroke="#64748b" stroke-width="4.5"/>
+          <line x1="22" y1="36" x2="98" y2="36" stroke="#cbd5e1" stroke-width="3.5"/>
+          <circle cx="36" cy="26" r="4" fill="#ef4444"/>
+          <circle cx="48" cy="26" r="4" fill="#22c55e"/>
+          <rect x="66" y="22" width="20" height="8" rx="4" fill="#38bdf8"/>
+          <circle cx="60" cy="70" r="24" fill="#bae6fd" stroke="#0284c7" stroke-width="5"/>
+          <path d="M40 72 Q50 62 60 72 T80 72 A20 20 0 0 1 40 72 Z" fill="#38bdf8"/>
+          <circle cx="52" cy="60" r="3" fill="#ffffff"/><circle cx="68" cy="62" r="2" fill="#ffffff"/>
+        </svg>`,
+      airconditioner: `
+        <svg viewBox="0 0 120 120" class="w-32 h-32 sm:w-40 sm:h-40 drop-shadow-md">
+          <rect x="12" y="24" width="96" height="44" rx="12" fill="#f8fafc" stroke="#0284c7" stroke-width="4.5"/>
+          <rect x="24" y="50" width="72" height="10" rx="4" fill="#bae6fd" stroke="#0284c7" stroke-width="2.5"/>
+          <circle cx="92" cy="36" r="4" fill="#22c55e"/>
+          <path d="M36 76 Q30 88 36 98" fill="none" stroke="#38bdf8" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M60 76 Q54 88 60 98" fill="none" stroke="#38bdf8" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M84 76 Q78 88 84 98" fill="none" stroke="#38bdf8" stroke-width="4.5" stroke-linecap="round"/>
+        </svg>`,
+      ricecooker: `
+        <svg viewBox="0 0 120 120" class="w-32 h-32 sm:w-40 sm:h-40 drop-shadow-md">
+          <path d="M42 26 Q42 16 48 12 M60 24 Q60 12 66 8 M78 26 Q78 16 84 12" fill="none" stroke="#94a3b8" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M24 52 C24 32 96 32 96 52 Z" fill="#f43f5e" stroke="#be123c" stroke-width="4"/>
+          <rect x="50" y="28" width="20" height="8" rx="4" fill="#be123c"/>
+          <rect x="22" y="50" width="76" height="50" rx="16" fill="#fff1f2" stroke="#f43f5e" stroke-width="4.5"/>
+          <rect x="46" y="70" width="28" height="14" rx="7" fill="#fb7185"/>
+          <circle cx="55" cy="77" r="3" fill="#fef08a"/><circle cx="65" cy="77" r="3" fill="#ffffff"/>
+        </svg>`,
+      iron: `
+        <svg viewBox="0 0 120 120" class="w-32 h-32 sm:w-40 sm:h-40 drop-shadow-md">
+          <path d="M30 48 L78 48 C88 48 94 56 94 64 L26 64 Z" fill="#a855f7" stroke="#6b21a8" stroke-width="4"/>
+          <path d="M18 84 L98 84 C98 62 78 52 54 52 C32 52 20 66 18 84 Z" fill="#c084fc" stroke="#6b21a8" stroke-width="4.5" stroke-linejoin="round"/>
+          <rect x="16" y="84" width="84" height="10" rx="5" fill="#94a3b8" stroke="#475569" stroke-width="3"/>
+          <path d="M36 48 C36 34 78 34 86 48" fill="none" stroke="#6b21a8" stroke-width="7" stroke-linecap="round"/>
+        </svg>`,
+
+      // Vehicle: Excavator
+      excavator: `
+        <svg viewBox="0 0 120 120" class="w-32 h-32 sm:w-40 sm:h-40 drop-shadow-md">
+          <rect x="16" y="82" width="60" height="20" rx="10" fill="#334155"/>
+          <circle cx="28" cy="92" r="5" fill="#94a3b8"/><circle cx="46" cy="92" r="5" fill="#94a3b8"/><circle cx="64" cy="92" r="5" fill="#94a3b8"/>
+          <rect x="20" y="54" width="48" height="28" rx="8" fill="#facc15" stroke="#ca8a04" stroke-width="4"/>
+          <rect x="28" y="34" width="32" height="22" rx="6" fill="#bae6fd" stroke="#ca8a04" stroke-width="4"/>
+          <path d="M64 60 L88 32 L102 58" fill="none" stroke="#eab308" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M92 60 L112 58 L106 80 L90 74 Z" fill="#475569" stroke="#1e293b" stroke-width="3" stroke-linejoin="round"/>
+        </svg>`,
+
+      // Shapes
+      circle: `
+        <svg viewBox="0 0 120 120" class="w-32 h-32 sm:w-40 sm:h-40 drop-shadow-md">
+          <circle cx="60" cy="60" r="46" fill="#38bdf8" stroke="#0284c7" stroke-width="6"/>
+          <circle cx="44" cy="52" r="5" fill="#0f172a"/><circle cx="76" cy="52" r="5" fill="#0f172a"/>
+          <path d="M46 70 Q60 84 74 70" fill="none" stroke="#0f172a" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="34" cy="62" r="5" fill="#f472b6" opacity="0.6"/><circle cx="86" cy="62" r="5" fill="#f472b6" opacity="0.6"/>
+        </svg>`,
+      triangle: `
+        <svg viewBox="0 0 120 120" class="w-32 h-32 sm:w-40 sm:h-40 drop-shadow-md">
+          <polygon points="60,14 108,100 12,100" fill="#fb923c" stroke="#ea580c" stroke-width="6" stroke-linejoin="round"/>
+          <circle cx="48" cy="68" r="4.5" fill="#0f172a"/><circle cx="72" cy="68" r="4.5" fill="#0f172a"/>
+          <path d="M50 82 Q60 91 70 82" fill="none" stroke="#0f172a" stroke-width="4.5" stroke-linecap="round"/>
+        </svg>`
+    };
+
+    /* ============================================================
+       2. CORE LEARNING CATEGORIES DATASET (8 Categories, 133 Items)
+       ============================================================ */
+    const CATEGORIES = [
+      {
+        id: 'animals',
+        title: 'Animals',
+        icon: '🦁',
+        gradient: 'from-amber-400 to-orange-500',
+        items: [
+          { word: 'Lion', phonetic: 'LIE-uhn', emoji: '🦁' },
+          { word: 'Elephant', phonetic: 'EL-uh-fuhnt', emoji: '🐘' },
+          { word: 'Monkey', phonetic: 'MUNG-kee', emoji: '🐒' },
+          { word: 'Dog', phonetic: 'DAWG', emoji: '🐶' },
+          { word: 'Cat', phonetic: 'KAT', emoji: '🐱' },
+          { word: 'Tiger', phonetic: 'TIE-ger', emoji: '🐯' },
+          { word: 'Rabbit', phonetic: 'RAB-it', emoji: '🐰' },
+          { word: 'Bear', phonetic: 'BAIR', emoji: '🐻' },
+          { word: 'Giraffe', phonetic: 'juh-RAF', emoji: '🦒' },
+          { word: 'Zebra', phonetic: 'ZEE-bruh', emoji: '🦓' },
+          { word: 'Panda', phonetic: 'PAN-duh', emoji: '🐼' },
+          { word: 'Kangaroo', phonetic: 'kang-guh-ROO', emoji: '🦘' },
+          { word: 'Penguin', phonetic: 'PENG-gwin', emoji: '🐧' },
+          { word: 'Dolphin', phonetic: 'DOL-fin', emoji: '🐬' },
+          { word: 'Frog', phonetic: 'FROG', emoji: '🐸' },
+          { word: 'Owl', phonetic: 'OWL', emoji: '🦉' },
+          { word: 'Horse', phonetic: 'HORS', emoji: '🐴' },
+          { word: 'Cow', phonetic: 'KOW', emoji: '🐮' },
+          { word: 'Pig', phonetic: 'PIG', emoji: '🐷' },
+          { word: 'Duck', phonetic: 'DUK', emoji: '🦆' }
+        ]
+      },
+      {
+        id: 'colors',
+        title: 'Colors',
+        icon: '🎨',
+        gradient: 'from-pink-500 to-rose-500',
+        items: [
+          { word: 'Red', phonetic: 'RED', colorHex: '#ef4444' },
+          { word: 'Blue', phonetic: 'BLOO', colorHex: '#3b82f6' },
+          { word: 'Yellow', phonetic: 'YEL-oh', colorHex: '#facc15', darkFace: true },
+          { word: 'Green', phonetic: 'GREEN', colorHex: '#22c55e' },
+          { word: 'Orange', phonetic: 'OR-inj', colorHex: '#f97316' },
+          { word: 'Purple', phonetic: 'PUR-puhl', colorHex: '#a855f7' },
+          { word: 'Pink', phonetic: 'PINGK', colorHex: '#f472b6' },
+          { word: 'Brown', phonetic: 'BROWN', colorHex: '#92400e' },
+          { word: 'Black', phonetic: 'BLAK', colorHex: '#1e293b' },
+          { word: 'White', phonetic: 'WITE', colorHex: '#ffffff', darkFace: true, needsBorder: true }
+        ]
+      },
+      {
+        id: 'fruits',
+        title: 'Fruits',
+        icon: '🍓',
+        gradient: 'from-emerald-400 to-green-600',
+        items: [
+          { word: 'Apple', phonetic: 'AP-uhl', emoji: '🍎' },
+          { word: 'Banana', phonetic: 'buh-NAN-uh', emoji: '🍌' },
+          { word: 'Orange', phonetic: 'OR-inj', emoji: '🍊' },
+          { word: 'Strawberry', phonetic: 'STRAW-ber-ee', emoji: '🍓' },
+          { word: 'Watermelon', phonetic: 'WAW-ter-mel-uhn', emoji: '🍉' },
+          { word: 'Grape', phonetic: 'GRAYP', emoji: '🍇' },
+          { word: 'Pineapple', phonetic: 'PINE-ap-uhl', emoji: '🍍' },
+          { word: 'Mango', phonetic: 'MANG-goh', emoji: '🥭' },
+          { word: 'Cherry', phonetic: 'CHER-ee', emoji: '🍒' },
+          { word: 'Peach', phonetic: 'PEECH', emoji: '🍑' },
+          { word: 'Pear', phonetic: 'PAIR', emoji: '🍐' },
+          { word: 'Kiwi', phonetic: 'KEE-wee', emoji: '🥝' },
+          { word: 'Lemon', phonetic: 'LEM-uhn', emoji: '🍋' },
+          { word: 'Coconut', phonetic: 'KOH-kuh-nut', emoji: '🥥' },
+          { word: 'Blueberry', phonetic: 'BLOO-ber-ee', emoji: '🫐' },
+          { word: 'Avocado', phonetic: 'av-uh-KAH-doh', emoji: '🥑' },
+          { word: 'Papaya', phonetic: 'puh-PIE-uh', svg: 'papaya' },
+          { word: 'Dragon Fruit', phonetic: 'DRAG-uhn FROOT', svg: 'dragonfruit' },
+          { word: 'Durian', phonetic: 'DOOR-ee-uhn', svg: 'durian' },
+          { word: 'Mangosteen', phonetic: 'MANG-goh-steen', svg: 'mangosteen' }
+        ]
+      },
+      {
+        id: 'electronics',
+        title: 'Electronics',
+        icon: '📱',
+        gradient: 'from-sky-400 to-indigo-500',
+        items: [
+          { word: 'TV', phonetic: 'TEE-VEE', emoji: '📺' },
+          { word: 'Fan', phonetic: 'FAN', svg: 'fan' },
+          { word: 'Light Bulb', phonetic: 'LITE BULB', emoji: '💡' },
+          { word: 'Fridge', phonetic: 'FRIJ', svg: 'fridge' },
+          { word: 'Washing Machine', phonetic: 'WOSH-ing muh-SHEEN', svg: 'washingmachine' },
+          { word: 'Phone', phonetic: 'FOHN', emoji: '📱' },
+          { word: 'Laptop', phonetic: 'LAP-top', emoji: '💻' },
+          { word: 'Air Conditioner', phonetic: 'AIR kuhn-DISH-uh-ner', svg: 'airconditioner' },
+          { word: 'Rice Cooker', phonetic: 'RISE KOOK-er', svg: 'ricecooker' },
+          { word: 'Iron', phonetic: 'EYE-urn', svg: 'iron' },
+          { word: 'Camera', phonetic: 'KAM-er-uh', emoji: '📷' },
+          { word: 'Speaker', phonetic: 'SPEE-ker', emoji: '🔊' }
+        ]
+      },
+      {
+        id: 'family',
+        title: 'Family',
+        icon: '👨‍👩‍👧‍👦',
+        gradient: 'from-fuchsia-400 to-purple-600',
+        items: [
+          { word: 'Daddy', phonetic: 'DAD-ee', emoji: '👨' },
+          { word: 'Mommy', phonetic: 'MOM-ee', emoji: '👩' },
+          { word: 'Brother', phonetic: 'BRUTH-er', emoji: '👦' },
+          { word: 'Sister', phonetic: 'SIS-ter', emoji: '👧' },
+          { word: 'Baby', phonetic: 'BAY-bee', emoji: '👶' },
+          { word: 'Grandpa', phonetic: 'GRAND-pah', emoji: '👴' },
+          { word: 'Grandma', phonetic: 'GRAND-mah', emoji: '👵' },
+          { word: 'Uncle', phonetic: 'UNG-kuhl', emoji: '🧔' },
+          { word: 'Aunt', phonetic: 'ANT / AHNT', emoji: '👩‍🦰' },
+          { word: 'Cousin', phonetic: 'KUZ-uhn', emoji: '🧒' },
+          { word: 'Twin', phonetic: 'TWIN', emoji: '👯' },
+          { word: 'Family', phonetic: 'FAM-uh-lee', emoji: '👨‍👩‍👧‍👦' }
+        ]
+      },
+      {
+        id: 'countries',
+        title: 'Countries & Flags',
+        icon: '🌍',
+        gradient: 'from-teal-400 to-cyan-600',
+        items: [
+          { word: 'Cambodia', phonetic: 'kam-BOH-dee-uh', flag: '🇰🇭', code: 'KH' },
+          { word: 'United States', phonetic: 'yoo-NITE-id STAYTS', flag: '🇺🇸', code: 'US' },
+          { word: 'United Kingdom', phonetic: 'yoo-NITE-id KING-duhm', flag: '🇬🇧', code: 'UK' },
+          { word: 'Japan', phonetic: 'juh-PAN', flag: '🇯🇵', code: 'JP' },
+          { word: 'South Korea', phonetic: 'SOWTH kuh-REE-uh', flag: '🇰🇷', code: 'KR' },
+          { word: 'France', phonetic: 'FRANS', flag: '🇫🇷', code: 'FR' },
+          { word: 'Thailand', phonetic: 'TIE-land', flag: '🇹🇭', code: 'TH' },
+          { word: 'Vietnam', phonetic: 'vee-et-NAM', flag: '🇻🇳', code: 'VN' },
+          { word: 'China', phonetic: 'CHY-nuh', flag: '🇨🇳', code: 'CN' },
+          { word: 'Australia', phonetic: 'aw-STRAYL-yuh', flag: '🇦🇺', code: 'AU' },
+          { word: 'Canada', phonetic: 'KAN-uh-duh', flag: '🇨🇦', code: 'CA' },
+          { word: 'Germany', phonetic: 'JUR-muh-nee', flag: '🇩🇪', code: 'DE' },
+          { word: 'Italy', phonetic: 'IT-uh-lee', flag: '🇮🇹', code: 'IT' },
+          { word: 'Spain', phonetic: 'SPAYN', flag: '🇪🇸', code: 'ES' },
+          { word: 'Brazil', phonetic: 'bruh-ZIL', flag: '🇧🇷', code: 'BR' },
+          { word: 'India', phonetic: 'IN-dee-uh', flag: '🇮🇳', code: 'IN' },
+          { word: 'Singapore', phonetic: 'SING-uh-por', flag: '🇸🇬', code: 'SG' },
+          { word: 'Malaysia', phonetic: 'muh-LAY-zhuh', flag: '🇲🇾', code: 'MY' },
+          { word: 'Indonesia', phonetic: 'in-duh-NEE-zhuh', flag: '🇮🇩', code: 'ID' },
+          { word: 'Switzerland', phonetic: 'SWIT-ser-luhnd', flag: '🇨🇭', code: 'CH' }
+        ]
+      },
+      {
+        id: 'vehicles',
+        title: 'Vehicles',
+        icon: '🚀',
+        gradient: 'from-blue-500 to-violet-600',
+        items: [
+          { word: 'Car', phonetic: 'KAR', emoji: '🚗' },
+          { word: 'Bus', phonetic: 'BUS', emoji: '🚌' },
+          { word: 'Train', phonetic: 'TRAYN', emoji: '🚂' },
+          { word: 'Airplane', phonetic: 'AIR-playn', emoji: '✈️' },
+          { word: 'Bicycle', phonetic: 'BY-si-kuhl', emoji: '🚲' },
+          { word: 'Boat', phonetic: 'BOHT', emoji: '⛵' },
+          { word: 'Fire Truck', phonetic: 'FIRE TRUK', emoji: '🚒' },
+          { word: 'Police Car', phonetic: 'puh-LEES KAR', emoji: '🚓' },
+          { word: 'Rocket', phonetic: 'ROK-it', emoji: '🚀' },
+          { word: 'Helicopter', phonetic: 'HEL-i-kop-ter', emoji: '🚁' },
+          { word: 'Excavator', phonetic: 'EK-skuh-vay-ter', svg: 'excavator' },
+          { word: 'Tractor', phonetic: 'TRAK-ter', emoji: '🚜' },
+          { word: 'Motorcycle', phonetic: 'MOH-ter-sy-kuhl', emoji: '🏍️' },
+          { word: 'Ambulance', phonetic: 'AM-byuh-luhns', emoji: '🚑' },
+          { word: 'Taxi', phonetic: 'TAK-see', emoji: '🚕' }
+        ]
+      },
+      {
+        id: 'numbers',
+        title: 'Numbers & Shapes',
+        icon: '⭐',
+        gradient: 'from-yellow-400 to-amber-500',
+        items: [
+          { word: 'One', phonetic: 'WUN', emoji: '1️⃣', count: 1 },
+          { word: 'Two', phonetic: 'TOO', emoji: '2️⃣', count: 2 },
+          { word: 'Three', phonetic: 'THREE', emoji: '3️⃣', count: 3 },
+          { word: 'Four', phonetic: 'FOR', emoji: '4️⃣', count: 4 },
+          { word: 'Five', phonetic: 'FIVE', emoji: '5️⃣', count: 5 },
+          { word: 'Six', phonetic: 'SIKS', emoji: '6️⃣', count: 6 },
+          { word: 'Seven', phonetic: 'SEV-uhn', emoji: '7️⃣', count: 7 },
+          { word: 'Eight', phonetic: 'AYT', emoji: '8️⃣', count: 8 },
+          { word: 'Nine', phonetic: 'NINE', emoji: '9️⃣', count: 9 },
+          { word: 'Ten', phonetic: 'TEN', emoji: '🔟', count: 10 },
+          { word: 'Circle', phonetic: 'SUR-kuhl', svg: 'circle' },
+          { word: 'Star', phonetic: 'STAR', emoji: '⭐' },
+          { word: 'Heart', phonetic: 'HART', emoji: '❤️' },
+          { word: 'Triangle', phonetic: 'TRY-ang-guhl', svg: 'triangle' }
+        ]
+      }
+    ];
+
+    /* ============================================================
+       3. WEB AUDIO API ENGINE (SFX, Synth Melodies, Drum Beats)
+       ============================================================ */
+    let audioCtx = null;
+
+    function getAudioCtx() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          audioCtx = new AudioContextClass();
+        }
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(() => {});
+      }
+      return audioCtx;
+    }
+
+    // Play a cheerful marimba/bell note
+    function playTone(freq, duration = 0.25, type = 'triangle', volume = 0.22, startTimeOffset = 0) {
+      const ctx = getAudioCtx();
+      if (!ctx || !freq) return;
+      const now = ctx.currentTime + startTimeOffset;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, now);
+
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.exponentialRampToValueAtTime(volume, now + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + duration + 0.02);
+    }
+
+    // Cute UI Pop Sound
+    function playPopSfx() {
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(340, now);
+      osc.frequency.exponentialRampToValueAtTime(760, now + 0.09);
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.12);
+    }
+
+    // Synthesized Animal & Bonus Fun SFX (No external audio!)
+    function playAnimalSfx(animal) {
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+
+      if (animal === 'dog') {
+        // Double Bark ("Woof! Woof!")
+        [0, 0.18].forEach((delay) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(320, now + delay);
+          osc.frequency.exponentialRampToValueAtTime(140, now + delay + 0.12);
+          gain.gain.setValueAtTime(0.22, now + delay);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.13);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + delay);
+          osc.stop(now + delay + 0.14);
+        });
+      } else if (animal === 'cat') {
+        // Sweet rising & falling "Meow!"
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(520, now);
+        osc.frequency.exponentialRampToValueAtTime(860, now + 0.15);
+        osc.frequency.exponentialRampToValueAtTime(460, now + 0.42);
+        gain.gain.setValueAtTime(0.01, now);
+        gain.gain.linearRampToValueAtTime(0.24, now + 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.44);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.45);
+      } else if (animal === 'monkey') {
+        // Playful Monkey Giggle/Chatter ("Ooh-ooh-aah-aah!")
+        [0, 0.11, 0.22, 0.33].forEach((d, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          const base = idx % 2 === 0 ? 520 : 680;
+          osc.frequency.setValueAtTime(base, now + d);
+          osc.frequency.exponentialRampToValueAtTime(base * 1.45, now + d + 0.08);
+          gain.gain.setValueAtTime(0.2, now + d);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + d + 0.095);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + d);
+          osc.stop(now + d + 0.1);
+        });
+      } else if (animal === 'duck') {
+        // Nasal "Quack! Quack!"
+        [0, 0.18].forEach((d) => {
+          const osc = ctx.createOscillator();
+          const filter = ctx.createBiquadFilter();
+          const gain = ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(420, now + d);
+          osc.frequency.linearRampToValueAtTime(340, now + d + 0.13);
+          filter.type = 'bandpass';
+          filter.frequency.setValueAtTime(1100, now + d);
+          filter.Q.setValueAtTime(4, now + d);
+          gain.gain.setValueAtTime(0.28, now + d);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + d + 0.14);
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + d);
+          osc.stop(now + d + 0.15);
+        });
+      } else if (animal === 'bunny') {
+        // Cute springy hop "Boing!"
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(240, now);
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.22);
+        gain.gain.setValueAtTime(0.24, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.26);
+      } else if (animal === 'bear') {
+        // Friendly warm bear "Grrr-haha!"
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(175, now);
+        osc.frequency.linearRampToValueAtTime(135, now + 0.28);
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.32);
+      }
+    }
+
+    function playDrumHit(type = 'kick') {
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      if (type === 'kick') {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(160, now);
+        osc.frequency.exponentialRampToValueAtTime(45, now + 0.14);
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.16);
+      } else {
+        // Clap / Snare noise burst
+        const bufferSize = ctx.sampleRate * 0.1;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'highpass';
+        filter.frequency.setValueAtTime(1000, now);
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.22, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        noise.start(now);
+      }
+    }
+
+    function playBonusSfx(kind, btnEl) {
+      if (kind === 'bark') playAnimalSfx('dog');
+      else if (kind === 'meow') playAnimalSfx('cat');
+      else if (kind === 'quack') playAnimalSfx('duck');
+      else if (kind === 'giggle') playAnimalSfx('monkey');
+      else if (kind === 'drum') playDrumHit('kick');
+      else if (kind === 'boing') playAnimalSfx('bunny');
+      else if (kind === 'clap') playDrumHit('clap');
+      if (btnEl) {
+        const rect = btnEl.getBoundingClientRect();
+        spawnConfetti(rect.left + rect.width / 2, rect.top, 6);
+      }
+    }
+
+    /* ============================================================
+       4. THEME SYSTEM (Boy Mode / Girl Mode) & CONFETTI
+       ============================================================ */
+    let currentTheme = 'boy';
+
+    const THEME_CONFIG = {
+      boy: {
+        brandIcon: '🚀',
+        catIcon: '🦕',
+        bgIcons: ['🚀', '🦕', '⭐', '🛸', '🦖', '⚡', '🌟', '🎈'],
+        confetti: ['⭐', '🚀', '🦕', '💙', '✨', '🌟']
+      },
+      girl: {
+        brandIcon: '🦄',
+        catIcon: '🌈',
+        bgIcons: ['🦄', '🌈', '💖', '🌸', '✨', '🦋', '🎀', '💫'],
+        confetti: ['💖', '🦄', '🌈', '✨', '🌸', '🎀']
+      }
+    };
+
+    function setTheme(theme, withCelebration = false) {
+      currentTheme = theme;
+      document.body.classList.remove('theme-boy', 'theme-girl');
+      document.body.classList.add(`theme-${theme}`);
+
+      const cfg = THEME_CONFIG[theme];
+      document.getElementById('brand-icon-badge').textContent = cfg.brandIcon;
+      document.getElementById('cat-heading-icon').textContent = cfg.catIcon;
+
+      const boyBtn = document.getElementById('btn-theme-boy');
+      const girlBtn = document.getElementById('btn-theme-girl');
+
+      if (theme === 'boy') {
+        boyBtn.className = 'px-3 py-1.5 rounded-xl text-sm font-bold flex items-center gap-1 transition-all bg-sky-500 text-white shadow';
+        girlBtn.className = 'px-3 py-1.5 rounded-xl text-sm font-bold flex items-center gap-1 transition-all text-slate-600 hover:text-pink-600';
+      } else {
+        girlBtn.className = 'px-3 py-1.5 rounded-xl text-sm font-bold flex items-center gap-1 transition-all bg-pink-500 text-white shadow';
+        boyBtn.className = 'px-3 py-1.5 rounded-xl text-sm font-bold flex items-center gap-1 transition-all text-slate-600 hover:text-sky-600';
+      }
+
+      renderBgDecorations();
+
+      if (withCelebration) {
+        playPopSfx();
+        spawnConfetti(window.innerWidth / 2, 70, 16);
+        showToast(theme === 'boy' ? '🚀 Boy Mode Activated!' : '🦄 Girl Mode Activated!');
+      }
+    }
+
+    function renderBgDecorations() {
+      const container = document.getElementById('bg-decorations');
+      const icons = THEME_CONFIG[currentTheme].bgIcons;
+      container.innerHTML = '';
+      const positions = [
+        { top: '12%', left: '4%', size: '2.5rem', delay: '0s' },
+        { top: '24%', right: '5%', size: '3rem', delay: '1.2s' },
+        { top: '52%', left: '3%', size: '2.2rem', delay: '2.1s' },
+        { top: '68%', right: '4%', size: '2.8rem', delay: '0.7s' },
+        { top: '85%', left: '12%', size: '2.4rem', delay: '1.8s' },
+        { top: '82%', right: '14%', size: '2.6rem', delay: '2.6s' }
+      ];
+      positions.forEach((pos, idx) => {
+        const el = document.createElement('div');
+        el.className = 'bg-deco-item';
+        el.textContent = icons[idx % icons.length];
+        el.style.fontSize = pos.size;
+        el.style.animationDelay = pos.delay;
+        if (pos.top) el.style.top = pos.top;
+        if (pos.left) el.style.left = pos.left;
+        if (pos.right) el.style.right = pos.right;
+        container.appendChild(el);
+      });
+    }
+
+    function spawnConfetti(x, y, count = 12) {
+      const icons = THEME_CONFIG[currentTheme].confetti;
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'confetti-particle';
+        p.textContent = icons[Math.floor(Math.random() * icons.length)];
+        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.5;
+        const dist = 60 + Math.random() * 90;
+        p.style.left = `${x}px`;
+        p.style.top = `${y}px`;
+        p.style.setProperty('--dx', `${Math.cos(angle) * dist}px`);
+        p.style.setProperty('--dy', `${Math.sin(angle) * dist - 40}px`);
+        p.style.setProperty('--rot', `${(Math.random() - 0.5) * 360}deg`);
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 950);
+      }
+    }
+
+    let toastTimeout = null;
+    function showToast(msg) {
+      const el = document.getElementById('toast-banner');
+      el.textContent = msg;
+      el.classList.remove('hidden');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => el.classList.add('hidden'), 2600);
+    }
+
+    /* ============================================================
+       5. NAVIGATION & GLOBAL CLEANUP
+       ============================================================ */
+    let currentView = 'home';
+
+    function stopAllActivities() {
+      // Cancel SpeechSynthesis & letter timers
+      cancelSpeechSequence();
+      // Stop Flashcard 20s smart timer
+      stopFlashcardTimer();
+      // Stop Studio Mic & Demo Beat
+      stopMicrophone();
+      stopDemoBeat();
+      // Stop Kids Song Player
+      stopSong();
+    }
+
+    function navigateTo(view) {
+      playPopSfx();
+      stopAllActivities();
+      currentView = view;
+
+      ['home', 'flashcard', 'studio', 'songs'].forEach((v) => {
+        document.getElementById(`view-${v}`).classList.toggle('hidden', v !== view);
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* ============================================================
+       6. HOME MENU CATEGORY RENDERER
+       ============================================================ */
+    function renderCategoryGrid() {
+      const grid = document.getElementById('category-grid');
+      grid.innerHTML = '';
+
+      CATEGORIES.forEach((cat) => {
+        const card = document.createElement('button');
+        card.onclick = () => openCategory(cat.id);
+        card.className = `cat-card text-left rounded-3xl p-4 sm:p-5 bg-gradient-to-br ${cat.gradient} text-white flex flex-col justify-between min-h-[138px] sm:min-h-[156px] relative overflow-hidden focus:outline-none`;
+        card.innerHTML = `
+          <div class="absolute -right-4 -bottom-4 text-7xl sm:text-8xl opacity-20 pointer-events-none select-none">${cat.icon}</div>
+          <div class="flex items-start justify-between gap-1">
+            <span class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-white/25 backdrop-blur-sm flex items-center justify-center text-3xl sm:text-4xl shadow-inner">${cat.icon}</span>
+            <span class="px-2.5 sm:px-3 py-1 rounded-full bg-black/20 text-[11px] sm:text-xs font-bold backdrop-blur-sm">${cat.items.length} Words</span>
+          </div>
+          <div class="mt-3 sm:mt-4 relative z-10">
+            <h4 class="text-lg sm:text-2xl font-bold leading-tight drop-shadow-sm">${cat.title}</h4>
+            <p class="text-[11px] sm:text-xs font-semibold text-white/90 mt-0.5">Tap to Play &amp; Spell →</p>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    /* ============================================================
+       7. FLASHCARD LEARNING PLAYER & 20-SECOND SMART TIMER
+       ============================================================ */
+    let activeCategory = null;
+    let shuffledItems = [];
+    let currentCardIdx = 0;
+    let spellAndSayMode = true;
+
+    // 20-second smart timer state
+    const TIMER_DURATION = 20;
+    let timerSecondsLeft = TIMER_DURATION;
+    let timerInterval = null;
+    let timerPaused = false;
+    let reminderTriggered = false;
+
+    // Speech session state (prevents overlapping/stale callbacks)
+    let speechSessionId = 0;
+    let speechTimeouts = [];
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function openCategory(catId) {
+      const cat = CATEGORIES.find((c) => c.id === catId);
+      if (!cat) return;
+
+      activeCategory = cat;
+      shuffledItems = shuffleArray(cat.items);
+      currentCardIdx = 0;
+      timerPaused = false;
+      updatePauseButtonUI();
+
+      navigateTo('flashcard');
+      document.getElementById('fc-cat-title').textContent = `${cat.icon} ${cat.title}`;
+      renderCurrentCard(true);
+    }
+
+    function renderCurrentCard(autoSpeak = true) {
+      const item = shuffledItems[currentCardIdx];
+      if (!item) return;
+
+      document.getElementById('fc-progress-text').textContent = `Card ${currentCardIdx + 1} / ${shuffledItems.length}`;
+      document.getElementById('fc-word-title').textContent = item.word;
+      document.getElementById('fc-phonetic').textContent = `/ ${item.phonetic} /`;
+
+      // Render Visual (Emoji / Custom Inline SVG / Color Swatch / Flag / Number Counter)
+      const visContainer = document.getElementById('fc-visual-container');
+      visContainer.innerHTML = '';
+
+      if (item.colorHex) {
+        const borderClass = item.needsBorder ? 'border-4 border-slate-300' : 'border-4 border-white';
+        const faceColor = item.darkFace ? '#1e293b' : '#ffffff';
+        visContainer.innerHTML = `
+          <div class="w-40 h-40 sm:w-48 sm:h-48 rounded-[2.5rem] ${borderClass} shadow-xl flex items-center justify-center relative overflow-hidden" style="background-color: ${item.colorHex};">
+            <div class="absolute top-3 left-5 w-16 h-6 bg-white/35 rounded-full -rotate-12"></div>
+            <svg viewBox="0 0 100 100" class="w-24 h-24">
+              <circle cx="34" cy="44" r="6" fill="${faceColor}"/>
+              <circle cx="66" cy="44" r="6" fill="${faceColor}"/>
+              <path d="M34 62 Q50 78 66 62" fill="none" stroke="${faceColor}" stroke-width="6" stroke-linecap="round"/>
+            </svg>
+          </div>
+        `;
+      } else if (item.flag) {
+        visContainer.innerHTML = `
+          <div class="flex flex-col items-center gap-2">
+            <div class="text-8xl sm:text-9xl leading-none drop-shadow-md">${item.flag}</div>
+            <span class="px-3.5 py-1 rounded-full bg-white text-slate-700 font-bold text-sm shadow border border-slate-200 tracking-widest">
+              ${item.code}
+            </span>
+          </div>
+        `;
+      } else if (item.svg && CUSTOM_SVGS[item.svg]) {
+        visContainer.innerHTML = CUSTOM_SVGS[item.svg];
+      } else if (item.count) {
+        const stars = Array.from({ length: item.count }, () => '<span class="text-2xl sm:text-3xl">⭐</span>').join('');
+        visContainer.innerHTML = `
+          <div class="flex flex-col items-center gap-3">
+            <div class="text-7xl sm:text-8xl leading-none drop-shadow-md">${item.emoji}</div>
+            <div class="flex flex-wrap justify-center gap-1 max-w-xs bg-white/75 px-3 py-1.5 rounded-2xl shadow-sm">${stars}</div>
+          </div>
+        `;
+      } else {
+        visContainer.innerHTML = `<div class="text-8xl sm:text-9xl leading-none drop-shadow-md">${item.emoji}</div>`;
+      }
+
+      // Render Individual Letter Tiles (Gracefully handling spaces)
+      const tilesContainer = document.getElementById('fc-letter-tiles');
+      tilesContainer.innerHTML = '';
+      const chars = item.word.split('');
+      chars.forEach((ch, idx) => {
+        if (ch === ' ') {
+          const spacer = document.createElement('div');
+          spacer.className = 'w-4 sm:w-6';
+          tilesContainer.appendChild(spacer);
+        } else {
+          const tile = document.createElement('div');
+          tile.id = `letter-tile-${idx}`;
+          tile.className = 'letter-tile w-10 h-12 sm:w-12 sm:h-14 rounded-2xl bg-white border-2 theme-border shadow-md flex items-center justify-center text-xl sm:text-2xl font-bold text-slate-700 uppercase';
+          tile.textContent = ch;
+          tilesContainer.appendChild(tile);
+        }
+      });
+
+      // Reset 20s smart timer and start speaking
+      resetFlashcardTimer();
+      if (autoSpeak) {
+        speakCurrentWord();
+      }
+    }
+
+    function cancelSpeechSequence() {
+      speechSessionId++;
+      speechTimeouts.forEach((t) => clearTimeout(t));
+      speechTimeouts = [];
+      if ('speechSynthesis' in window) {
+        try { window.speechSynthesis.cancel(); } catch (e) {}
+      }
+      document.querySelectorAll('.letter-tile.active-letter').forEach((el) => el.classList.remove('active-letter'));
+    }
+
+    function getKidFriendlyVoice() {
+      if (!('speechSynthesis' in window)) return null;
+      const voices = window.speechSynthesis.getVoices() || [];
+      return (
+        voices.find((v) => /en[-_]US/i.test(v.lang) && /female|samantha|google us|zira/i.test(v.name)) ||
+        voices.find((v) => /en[-_]US/i.test(v.lang)) ||
+        voices.find((v) => /^en/i.test(v.lang)) ||
+        null
+      );
+    }
+
+    function speakCurrentWord() {
+      const item = shuffledItems[currentCardIdx];
+      if (!item) return;
+
+      cancelSpeechSequence();
+      const mySession = speechSessionId;
+      const hasSpeech = 'speechSynthesis' in window;
+      const voice = getKidFriendlyVoice();
+
+      // Build list of non-space letter indices to highlight & spell
+      const letters = [];
+      item.word.split('').forEach((ch, idx) => {
+        if (ch !== ' ') letters.push({ ch: ch.toUpperCase(), idx });
+      });
+
+      const speakFullWord = () => {
+        if (mySession !== speechSessionId) return;
+        // Highlight all tiles briefly when saying the full word
+        letters.forEach(({ idx }) => {
+          const el = document.getElementById(`letter-tile-${idx}`);
+          if (el) el.classList.add('active-letter');
+        });
+
+        const clearAll = () => {
+          if (mySession !== speechSessionId) return;
+          letters.forEach(({ idx }) => {
+            const el = document.getElementById(`letter-tile-${idx}`);
+            if (el) el.classList.remove('active-letter');
+          });
+        };
+
+        if (hasSpeech) {
+          const u = new SpeechSynthesisUtterance(item.word);
+          if (voice) u.voice = voice;
+          u.lang = 'en-US';
+          u.rate = 0.88;
+          u.pitch = 1.15;
+          u.onend = clearAll;
+          u.onerror = clearAll;
+          window.speechSynthesis.speak(u);
+          // Safety cleanup timeout in case onend doesn't fire
+          speechTimeouts.push(setTimeout(clearAll, 1600));
+        } else {
+          speechTimeouts.push(setTimeout(clearAll, 900));
+        }
+      };
+
+      if (!spellAndSayMode) {
+        speechTimeouts.push(setTimeout(speakFullWord, 60));
+        return;
+      }
+
+      // Spell letter-by-letter, then say the full word
+      let step = 0;
+      const spellNextLetter = () => {
+        if (mySession !== speechSessionId) return;
+
+        // Clear previous highlight
+        document.querySelectorAll('.letter-tile.active-letter').forEach((el) => el.classList.remove('active-letter'));
+
+        if (step >= letters.length) {
+          speechTimeouts.push(setTimeout(speakFullWord, 260));
+          return;
+        }
+
+        const { ch, idx } = letters[step];
+        const tile = document.getElementById(`letter-tile-${idx}`);
+        if (tile) tile.classList.add('active-letter');
+        step++;
+
+        if (hasSpeech) {
+          let advanced = false;
+          const goNext = () => {
+            if (advanced || mySession !== speechSessionId) return;
+            advanced = true;
+            speechTimeouts.push(setTimeout(spellNextLetter, 110));
+          };
+
+          const u = new SpeechSynthesisUtterance(ch.toLowerCase());
+          if (voice) u.voice = voice;
+          u.lang = 'en-US';
+          u.rate = 1.0;
+          u.pitch = 1.2;
+          u.onend = goNext;
+          u.onerror = goNext;
+          window.speechSynthesis.speak(u);
+          // Fallback safety timer if browser speechSynthesis stalls
+          speechTimeouts.push(setTimeout(goNext, 850));
+        } else {
+          playTone(440 + step * 30, 0.14, 'triangle', 0.12);
+          speechTimeouts.push(setTimeout(spellNextLetter, 420));
+        }
+      };
+
+      // Small delay after cancel() ensures reliable SpeechSynthesis start across browsers
+      speechTimeouts.push(setTimeout(spellNextLetter, 70));
+    }
+
+    function handleCardTap() {
+      playPopSfx();
+      const card = document.getElementById('fc-visual-card');
+      card.classList.remove('animate-card-bounce');
+      void card.offsetWidth;
+      card.classList.add('animate-card-bounce');
+
+      const rect = card.getBoundingClientRect();
+      spawnConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2, 10);
+
+      resetFlashcardTimer();
+      speakCurrentWord();
+    }
+
+    function nextCard() {
+      playPopSfx();
+      currentCardIdx = (currentCardIdx + 1) % shuffledItems.length;
+      renderCurrentCard(true);
+    }
+
+    function prevCard() {
+      playPopSfx();
+      currentCardIdx = (currentCardIdx - 1 + shuffledItems.length) % shuffledItems.length;
+      renderCurrentCard(true);
+    }
+
+    function repeatCard() {
+      playPopSfx();
+      resetFlashcardTimer();
+      speakCurrentWord();
+    }
+
+    function toggleSpellMode() {
+      playPopSfx();
+      spellAndSayMode = !spellAndSayMode;
+      document.getElementById('spell-mode-label').textContent = spellAndSayMode ? 'Spell + Say' : 'Say Only';
+      showToast(spellAndSayMode ? '🔤 Mode: Spell Letter-by-Letter + Say Word' : '🗣️ Mode: Say Word Only');
+      resetFlashcardTimer();
+      speakCurrentWord();
+    }
+
+    function toggleTimerPause() {
+      playPopSfx();
+      timerPaused = !timerPaused;
+      updatePauseButtonUI();
+    }
+
+    function updatePauseButtonUI() {
+      document.getElementById('pause-timer-icon').textContent = timerPaused ? '▶️' : '⏸️';
+      document.getElementById('pause-timer-label').textContent = timerPaused ? 'Resume Timer' : 'Pause Timer';
+      document.getElementById('timer-status-text').textContent = timerPaused ? 'Timer Paused' : 'Smart Auto-Next Timer';
+    }
+
+    function stopFlashcardTimer() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    function resetFlashcardTimer() {
+      stopFlashcardTimer();
+      timerSecondsLeft = TIMER_DURATION;
+      reminderTriggered = false;
+      updateTimerVisuals();
+
+      timerInterval = setInterval(() => {
+        if (timerPaused || currentView !== 'flashcard') return;
+
+        timerSecondsLeft--;
+        if (timerSecondsLeft < 0) timerSecondsLeft = 0;
+        updateTimerVisuals();
+
+        // At 10 seconds elapsed (10s remaining): Gentle Reminder + Speak Again
+        if (timerSecondsLeft === 10 && !reminderTriggered) {
+          reminderTriggered = true;
+          const card = document.getElementById('fc-visual-card');
+          card.classList.remove('animate-reminder-pulse');
+          void card.offsetWidth;
+          card.classList.add('animate-reminder-pulse');
+          document.getElementById('timer-status-text').textContent = '✨ Listen one more time!';
+          speakCurrentWord();
+        }
+
+        // At 20 seconds elapsed (0s remaining): Auto-Advance to Next Random Word
+        if (timerSecondsLeft === 0) {
+          nextCard();
+        }
+      }, 1000);
+    }
+
+    function updateTimerVisuals() {
+      const pct = (timerSecondsLeft / TIMER_DURATION) * 100;
+      const circumference = 157.08;
+      const offset = circumference * (1 - timerSecondsLeft / TIMER_DURATION);
+
+      document.getElementById('timer-bar-fill').style.width = `${pct}%`;
+      document.getElementById('timer-seconds-badge').textContent = `${timerSecondsLeft}s`;
+      document.getElementById('timer-ring-number').textContent = `${timerSecondsLeft}`;
+      document.getElementById('timer-ring-circle').style.strokeDashoffset = `${offset}`;
+      if (timerSecondsLeft > 10 && !timerPaused) {
+        document.getElementById('timer-status-text').textContent = 'Smart Auto-Next Timer';
+      }
+    }
+
+    /* ============================================================
+       8. SING & SPEAK STUDIO (Voice-Reactive + Demo Beat Stage)
+       ============================================================ */
+    let micStream = null;
+    let micAnalyser = null;
+    let micSource = null;
+    let micActive = false;
+    let studioRafId = null;
+
+    let demoBeatActive = false;
+    let demoBeatInterval = null;
+    let demoEnergy = 0;
+    let demoStep = 0;
+
+    function initStudioEqualizer() {
+      const eq = document.getElementById('studio-eq-bars');
+      eq.innerHTML = '';
+      const colors = ['#38bdf8', '#34d399', '#facc15', '#fb923c', '#f472b6', '#c084fc'];
+      for (let i = 0; i < 16; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'studio-eq-bar w-2.5 sm:w-3.5 rounded-full transition-all duration-75';
+        bar.style.height = '10px';
+        bar.style.backgroundColor = colors[i % colors.length];
+        eq.appendChild(bar);
+      }
+    }
+
+    async function toggleMicrophone() {
+      if (micActive) {
+        stopMicrophone();
+        return;
+      }
+      stopDemoBeat();
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        showToast('🎤 Microphone not supported here — try Demo Beat mode!');
+        return;
+      }
+
+      try {
+        const ctx = getAudioCtx();
+        micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        micSource = ctx.createMediaStreamSource(micStream);
+        micAnalyser = ctx.createAnalyser();
+        micAnalyser.fftSize = 128;
+        micAnalyser.smoothingTimeConstant = 0.72;
+        micSource.connect(micAnalyser);
+
+        micActive = true;
+        document.getElementById('mic-btn-icon').textContent = '🛑';
+        document.getElementById('mic-btn-text').textContent = 'Stop Mic';
+        document.getElementById('studio-status-pill').textContent = '🎤 Listening! Sing or Clap!';
+        showToast('🎤 Mic is ON! Talk, sing, or clap!');
+
+        startStudioLoop();
+      } catch (err) {
+        showToast('🎤 Mic permission blocked — tap "Demo Beat" to dance!');
+      }
+    }
+
+    function stopMicrophone() {
+      micActive = false;
+      if (micStream) {
+        micStream.getTracks().forEach((t) => t.stop());
+        micStream = null;
+      }
+      if (micSource) {
+        try { micSource.disconnect(); } catch (e) {}
+        micSource = null;
+      }
+      micAnalyser = null;
+
+      const icon = document.getElementById('mic-btn-icon');
+      const text = document.getElementById('mic-btn-text');
+      if (icon) icon.textContent = '🎤';
+      if (text) text.textContent = 'Start Mic';
+      if (!demoBeatActive) {
+        stopStudioLoop();
+        const pill = document.getElementById('studio-status-pill');
+        if (pill) pill.textContent = 'Ready to Jam!';
+      }
+    }
+
+    function toggleDemoBeat() {
+      if (demoBeatActive) {
+        stopDemoBeat();
+        return;
+      }
+      stopMicrophone();
+      getAudioCtx();
+      demoBeatActive = true;
+      demoStep = 0;
+
+      document.getElementById('demo-btn-icon').textContent = '⏹️';
+      document.getElementById('demo-btn-text').textContent = 'Stop Beat';
+      document.getElementById('studio-status-pill').textContent = '🥁 Demo Beat Playing!';
+
+      const bassNotes = [261.63, 329.63, 392.0, 523.25, 392.0, 329.63, 293.66, 392.0];
+      demoBeatInterval = setInterval(() => {
+        if (!demoBeatActive) return;
+        const step = demoStep % 8;
+        if (step % 2 === 0) {
+          playDrumHit('kick');
+          demoEnergy = 0.92;
+        } else {
+          playDrumHit('clap');
+          demoEnergy = 0.68;
+        }
+        playTone(bassNotes[step], 0.18, 'triangle', 0.16);
+        demoStep++;
+      }, 280);
+
+      startStudioLoop();
+    }
+
+    function stopDemoBeat() {
+      demoBeatActive = false;
+      if (demoBeatInterval) {
+        clearInterval(demoBeatInterval);
+        demoBeatInterval = null;
+      }
+      demoEnergy = 0;
+      const icon = document.getElementById('demo-btn-icon');
+      const text = document.getElementById('demo-btn-text');
+      if (icon) icon.textContent = '🥁';
+      if (text) text.textContent = 'Demo Beat';
+      if (!micActive) {
+        stopStudioLoop();
+        const pill = document.getElementById('studio-status-pill');
+        if (pill) pill.textContent = 'Ready to Jam!';
+      }
+    }
+
+    let lastNoteSpawnTime = 0;
+
+    function startStudioLoop() {
+      if (studioRafId) cancelAnimationFrame(studioRafId);
+      const dataArray = new Uint8Array(64);
+      const bars = document.querySelectorAll('.studio-eq-bar');
+      const animals = document.querySelectorAll('.studio-animal > div');
+      const volMeter = document.getElementById('studio-vol-meter');
+
+      const loop = (timestamp) => {
+        if (!micActive && !demoBeatActive) return;
+
+        let level = 0;
+        if (micActive && micAnalyser) {
+          micAnalyser.getByteFrequencyData(dataArray);
+          let sum = 0;
+          for (let i = 0; i < 32; i++) sum += dataArray[i];
+          level = Math.min(1, (sum / (32 * 255)) * 2.4);
+        } else if (demoBeatActive) {
+          demoEnergy *= 0.88;
+          level = demoEnergy;
+          for (let i = 0; i < 32; i++) {
+            dataArray[i] = Math.min(255, Math.floor((level * 210) * (0.55 + 0.45 * Math.sin(timestamp / 90 + i))));
+          }
+        }
+
+        // Update Volume Meter
+        volMeter.style.width = `${Math.max(4, Math.round(level * 100))}%`;
+
+        // Update Equalizer Bars
+        bars.forEach((bar, i) => {
+          const val = dataArray[i * 2] || 0;
+          const h = Math.max(8, Math.round((val / 255) * 56));
+          bar.style.height = `${h}px`;
+        });
+
+        // Animate 5 Animals in Sync with Voice / Beat Intensity
+        animals.forEach((el, idx) => {
+          const bandVal = (dataArray[idx * 4 + 2] || level * 200) / 255;
+          const bounce = Math.round(bandVal * 34);
+          const tilt = Math.sin(timestamp / 110 + idx * 1.3) * (bandVal * 18);
+          const scale = 1 + bandVal * 0.22;
+          el.style.transform = `translateY(${-bounce}px) rotate(${tilt}deg) scale(${scale})`;
+        });
+
+        // Spawn Floating Musical Notes on Peaks
+        if (level > 0.34 && timestamp - lastNoteSpawnTime > 260) {
+          lastNoteSpawnTime = timestamp;
+          spawnStageNote('studio-notes-layer');
+        }
+
+        studioRafId = requestAnimationFrame(loop);
+      };
+
+      studioRafId = requestAnimationFrame(loop);
+    }
+
+    function stopStudioLoop() {
+      if (studioRafId) {
+        cancelAnimationFrame(studioRafId);
+        studioRafId = null;
+      }
+      document.querySelectorAll('.studio-eq-bar').forEach((b) => (b.style.height = '10px'));
+      document.querySelectorAll('.studio-animal > div').forEach((el) => (el.style.transform = 'none'));
+      const volMeter = document.getElementById('studio-vol-meter');
+      if (volMeter) volMeter.style.width = '4%';
+    }
+
+    function spawnStageNote(layerId) {
+      const layer = document.getElementById(layerId);
+      if (!layer) return;
+      const notes = ['🎵', '🎶', '✨', '🎼', '⭐'];
+      const n = document.createElement('div');
+      n.className = 'stage-note';
+      n.textContent = notes[Math.floor(Math.random() * notes.length)];
+      n.style.left = `${10 + Math.random() * 80}%`;
+      n.style.bottom = `${20 + Math.random() * 35}%`;
+      layer.appendChild(n);
+      setTimeout(() => n.remove(), 1400);
+    }
+
+    const ANIMAL_BUBBLES = {
+      monkey: 'Ooh-aah! 🍌',
+      dog: 'Woof! 🦴',
+      cat: 'Meow! 🐟',
+      bunny: 'Boing! 🥕',
+      bear: 'Grrr-hi! 🍯',
+      duck: 'Quack! 💧'
+    };
+
+    function tapStageAnimal(animal, btnEl) {
+      playAnimalSfx(animal);
+
+      // Show cute speech bubble
+      const bubble = document.createElement('div');
+      bubble.className = 'animal-bubble px-3 py-1 rounded-full bg-white text-slate-800 font-bold text-xs sm:text-sm shadow-lg border-2 border-amber-300';
+      bubble.textContent = ANIMAL_BUBBLES[animal] || 'Yay!';
+      btnEl.appendChild(bubble);
+      setTimeout(() => bubble.remove(), 980);
+
+      // Quick bounce animation on emoji
+      const emojiEl = btnEl.querySelector('div');
+      if (emojiEl) {
+        emojiEl.classList.remove('animate-card-bounce');
+        void emojiEl.offsetWidth;
+        emojiEl.classList.add('animate-card-bounce');
+      }
+
+      const rect = btnEl.getBoundingClientRect();
+      spawnConfetti(rect.left + rect.width / 2, rect.top + 20, 6);
+    }
+
+    /* ============================================================
+       9. KIDS SING-ALONG MUSIC PLAYER (8 Classic Songs + Synced Dance)
+       ============================================================ */
+    const NOTES = {
+      R: 0,
+      C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.00, A4: 440.00, B4: 493.88,
+      C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99, A5: 880.00
+    };
+
+    // Each song has lines: { lyric, notes: [[noteName, beats], ...] }
+    const KIDS_SONGS = [
+      {
+        id: 'abc',
+        title: 'ABC Song',
+        icon: '🔤',
+        bpm: 120,
+        lines: [
+          { lyric: 'A - B - C - D - E - F - G', notes: [['C4',1],['C4',1],['G4',1],['G4',1],['A4',1],['A4',1],['G4',2]] },
+          { lyric: 'H - I - J - K - L-M-N-O-P', notes: [['F4',1],['F4',1],['E4',1],['E4',1],['D4',0.5],['D4',0.5],['D4',0.5],['D4',0.5],['C4',2]] },
+          { lyric: 'Q - R - S ... T - U - V', notes: [['G4',1],['G4',1],['F4',2],['E4',1],['E4',1],['D4',2]] },
+          { lyric: 'W - X ... Y and Z!', notes: [['G4',1],['G4',1],['F4',2],['E4',1],['E4',1],['D4',2]] },
+          { lyric: 'Now I know my A - B - Cs', notes: [['C4',1],['C4',1],['G4',1],['G4',1],['A4',1],['A4',1],['G4',2]] },
+          { lyric: 'Next time won’t you sing with me!', notes: [['F4',1],['F4',1],['E4',1],['E4',1],['D4',1],['D4',1],['C4',2]] }
+        ]
+      },
+      {
+        id: 'babyshark',
+        title: 'Baby Shark',
+        icon: '🦈',
+        bpm: 132,
+        lines: [
+          { lyric: 'Baby shark, doo doo doo doo doo doo!', notes: [['D4',1],['E4',1],['G4',0.5],['G4',0.5],['G4',0.5],['G4',0.5],['G4',0.5],['G4',1.5]] },
+          { lyric: 'Baby shark, doo doo doo doo doo doo!', notes: [['D4',1],['E4',1],['G4',0.5],['G4',0.5],['G4',0.5],['G4',0.5],['G4',0.5],['G4',1.5]] },
+          { lyric: 'Baby shark! 🦈', notes: [['G4',1],['G4',1],['F4',2]] },
+          { lyric: 'Mommy shark, doo doo doo doo doo doo!', notes: [['D4',1],['E4',1],['G4',0.5],['G4',0.5],['G4',0.5],['G4',0.5],['G4',0.5],['G4',1.5]] },
+          { lyric: 'Daddy shark, doo doo doo doo doo doo!', notes: [['D4',1],['E4',1],['G4',0.5],['G4',0.5],['G4',0.5],['G4',0.5],['G4',0.5],['G4',1.5]] },
+          { lyric: 'Grandma shark, doo doo doo doo doo doo!', notes: [['D4',1],['E4',1],['G4',0.5],['G4',0.5],['G4',0.5],['G4',0.5],['G4',0.5],['G4',1.5]] },
+          { lyric: 'Grandpa shark, doo doo doo doo doo doo!', notes: [['D4',1],['E4',1],['G4',0.5],['G4',0.5],['G4',0.5],['G4',0.5],['G4',0.5],['G4',1.5]] },
+          { lyric: 'Let’s go hunt, doo doo doo doo doo doo!', notes: [['D4',1],['E4',1],['G4',0.5],['G4',0.5],['G4',0.5],['G4',0.5],['G4',0.5],['G4',1.5]] },
+          { lyric: 'Safe at last! Yay! 🎉', notes: [['G4',1],['A4',1],['C5',2]] }
+        ]
+      },
+      {
+        id: 'johny',
+        title: 'Johny Johny Yes Papa',
+        icon: '🍭',
+        bpm: 126,
+        lines: [
+          { lyric: 'Johny, Johny! — Yes, Papa!', notes: [['C4',1],['C4',1],['G4',1],['G4',1],['A4',1],['A4',1],['G4',2]] },
+          { lyric: 'Eating sugar? — No, Papa!', notes: [['F4',1],['F4',1],['E4',1],['E4',1],['D4',1],['D4',1],['C4',2]] },
+          { lyric: 'Telling lies? — No, Papa!', notes: [['G4',1],['G4',1],['F4',1],['F4',1],['E4',1],['E4',1],['D4',2]] },
+          { lyric: 'Open your mouth — Ha! Ha! Ha!', notes: [['C4',1],['E4',1],['G4',1],['C5',1],['G4',1],['E4',1],['C4',2]] }
+        ]
+      },
+      {
+        id: 'twinkle',
+        title: 'Twinkle Twinkle',
+        icon: '⭐',
+        bpm: 112,
+        lines: [
+          { lyric: 'Twinkle, twinkle, little star,', notes: [['C4',1],['C4',1],['G4',1],['G4',1],['A4',1],['A4',1],['G4',2]] },
+          { lyric: 'How I wonder what you are!', notes: [['F4',1],['F4',1],['E4',1],['E4',1],['D4',1],['D4',1],['C4',2]] },
+          { lyric: 'Up above the world so high,', notes: [['G4',1],['G4',1],['F4',1],['F4',1],['E4',1],['E4',1],['D4',2]] },
+          { lyric: 'Like a diamond in the sky.', notes: [['G4',1],['G4',1],['F4',1],['F4',1],['E4',1],['E4',1],['D4',2]] },
+          { lyric: 'Twinkle, twinkle, little star,', notes: [['C4',1],['C4',1],['G4',1],['G4',1],['A4',1],['A4',1],['G4',2]] },
+          { lyric: 'How I wonder what you are!', notes: [['F4',1],['F4',1],['E4',1],['E4',1],['D4',1],['D4',1],['C4',2]] }
+        ]
+      },
+      {
+        id: 'oldmacdonald',
+        title: 'Old MacDonald',
+        icon: '🐮',
+        bpm: 128,
+        lines: [
+          { lyric: 'Old MacDonald had a farm, E-I-E-I-O!', notes: [['G4',1],['G4',1],['G4',1],['D4',1],['E4',1],['E4',1],['D4',2]] },
+          { lyric: 'And on his farm he had a duck, E-I-E-I-O!', notes: [['B4',1],['B4',1],['A4',1],['A4',1],['G4',2],['R',1],['D4',1]] },
+          { lyric: 'With a quack-quack here and a quack-quack there,', notes: [['G4',0.5],['G4',0.5],['G4',1],['G4',0.5],['G4',0.5],['G4',1],['G4',0.5],['G4',0.5],['G4',0.5],['G4',0.5],['G4',1]] },
+          { lyric: 'Old MacDonald had a farm, E-I-E-I-O!', notes: [['G4',1],['G4',1],['G4',1],['D4',1],['E4',1],['E4',1],['D4',2]] },
+          { lyric: 'E - I - E - I - O!', notes: [['B4',1],['B4',1],['A4',1],['A4',1],['G4',3]] }
+        ]
+      },
+      {
+        id: 'wheels',
+        title: 'Wheels on the Bus',
+        icon: '🚌',
+        bpm: 132,
+        lines: [
+          { lyric: 'The wheels on the bus go round and round,', notes: [['C4',1],['F4',1],['F4',0.5],['F4',0.5],['F4',1],['A4',1],['C5',1],['A4',1],['F4',2]] },
+          { lyric: 'Round and round, round and round!', notes: [['G4',1],['E4',1],['C4',2],['C5',1],['A4',1],['F4',2]] },
+          { lyric: 'The horn on the bus goes beep, beep, beep!', notes: [['C4',1],['F4',1],['F4',0.5],['F4',0.5],['F4',1],['A4',1],['C5',1],['A4',1],['F4',2]] },
+          { lyric: 'All through the town!', notes: [['G4',1],['C4',1],['C4',1],['F4',3]] }
+        ]
+      },
+      {
+        id: 'headshoulders',
+        title: 'Head, Shoulders, Knees',
+        icon: '🙆',
+        bpm: 124,
+        lines: [
+          { lyric: 'Head, shoulders, knees and toes, knees and toes!', notes: [['C4',1],['D4',1],['E4',1],['F4',1],['G4',1],['E4',1],['C4',2]] },
+          { lyric: 'Head, shoulders, knees and toes, knees and toes!', notes: [['C4',1],['D4',1],['E4',1],['F4',1],['G4',1],['E4',1],['C4',2]] },
+          { lyric: 'And eyes and ears and mouth and nose,', notes: [['A4',1],['A4',1],['G4',1],['G4',1],['F4',1],['F4',1],['E4',2]] },
+          { lyric: 'Head, shoulders, knees and toes, knees and toes!', notes: [['D4',1],['E4',1],['F4',1],['D4',1],['G4',1],['G4',1],['C4',2]] }
+        ]
+      },
+      {
+        id: 'happy',
+        title: 'If You’re Happy',
+        icon: '👏',
+        bpm: 134,
+        lines: [
+          { lyric: 'If you’re happy and you know it, clap your hands! 👏👏', notes: [['C4',0.5],['C4',0.5],['F4',1],['F4',1],['F4',1],['F4',1],['F4',1],['E4',1],['F4',1],['G4',2]] },
+          { lyric: 'If you’re happy and you know it, stomp your feet! 👟👟', notes: [['C4',0.5],['C4',0.5],['G4',1],['G4',1],['G4',1],['G4',1],['G4',1],['F4',1],['G4',1],['A4',2]] },
+          { lyric: 'If you’re happy and you know it, shout Hooray! 🙌', notes: [['A4',0.5],['A4',0.5],['B4',1],['B4',1],['B4',1],['G4',1],['A4',1],['A4',1],['G4',1],['F4',1]] },
+          { lyric: 'If you’re happy and you know it, clap your hands! 👏👏', notes: [['E4',1],['E4',1],['G4',1],['G4',1],['F4',1],['E4',1],['F4',2]] }
+        ]
+      }
+    ];
+
+    let selectedSongIdx = 0;
+    let songPlaying = false;
+    let songTempoMult = 1.0;
+    let songStepTimeout = null;
+    let songFlatEvents = [];
+    let songEventIdx = 0;
+
+    function renderSongSelector() {
+      const grid = document.getElementById('song-selector-grid');
+      grid.innerHTML = '';
+
+      KIDS_SONGS.forEach((song, idx) => {
+        const isSelected = idx === selectedSongIdx;
+        const btn = document.createElement('button');
+        btn.onclick = () => selectSong(idx);
+        btn.className = `btn-chunky p-3 rounded-2xl text-left flex items-center gap-2.5 border-2 transition-all ${
+          isSelected
+            ? 'theme-primary-bg text-white border-white'
+            : 'bg-white/90 text-slate-700 border-slate-200 hover:border-amber-300'
+        }`;
+        btn.innerHTML = `
+          <span class="text-2xl sm:text-3xl shrink-0">${song.icon}</span>
+          <span class="text-xs sm:text-sm font-bold leading-tight">${song.title}</span>
+        `;
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectSong(idx) {
+      playPopSfx();
+      stopSong();
+      selectedSongIdx = idx;
+      renderSongSelector();
+      renderKaraokeLyrics();
+    }
+
+    function renderKaraokeLyrics() {
+      const song = KIDS_SONGS[selectedSongIdx];
+      document.getElementById('song-active-title').textContent = `${song.icon} ${song.title}`;
+      const box = document.getElementById('karaoke-box');
+      box.innerHTML = '';
+
+      song.lines.forEach((line, idx) => {
+        const p = document.createElement('div');
+        p.id = `lyric-line-${idx}`;
+        p.className = 'lyric-line px-4 py-2.5 rounded-2xl text-base sm:text-lg text-slate-600';
+        p.textContent = line.lyric;
+        box.appendChild(p);
+      });
+
+      document.getElementById('song-progress-bar').style.width = '0%';
+      document.getElementById('song-progress-label').textContent = '0%';
+      document.getElementById('song-now-playing-badge').textContent = `🎵 Selected: ${song.title}`;
+    }
+
+    function setSongTempo(mult) {
+      playPopSfx();
+      songTempoMult = mult;
+      const map = { 0.85: 'tempo-slow', 1.0: 'tempo-normal', 1.2: 'tempo-fast' };
+      Object.entries(map).forEach(([k, id]) => {
+        const el = document.getElementById(id);
+        if (parseFloat(k) === mult) {
+          el.className = 'px-2.5 py-1 rounded-xl text-xs font-bold bg-emerald-500 text-white shadow';
+        } else {
+          el.className = 'px-2.5 py-1 rounded-xl text-xs font-bold text-slate-600';
+        }
+      });
+    }
+
+    function togglePlaySong() {
+      if (songPlaying) {
+        // Pause
+        songPlaying = false;
+        clearTimeout(songStepTimeout);
+        document.getElementById('song-play-icon').textContent = '▶️';
+        document.getElementById('song-play-text').textContent = 'Resume';
+        document.getElementById('song-now-playing-badge').textContent = '⏸️ Paused';
+        resetSongDancers();
+        return;
+      }
+
+      getAudioCtx();
+      const song = KIDS_SONGS[selectedSongIdx];
+
+      // Build flat note event queue if starting fresh
+      if (songEventIdx === 0 || songEventIdx >= songFlatEvents.length) {
+        songFlatEvents = [];
+        song.lines.forEach((line, lineIdx) => {
+          line.notes.forEach(([noteName, beats], noteIdx) => {
+            songFlatEvents.push({ lineIdx, noteName, beats, isLineStart: noteIdx === 0 });
+          });
+        });
+        songEventIdx = 0;
+      }
+
+      songPlaying = true;
+      document.getElementById('song-play-icon').textContent = '⏸️';
+      document.getElementById('song-play-text').textContent = 'Pause';
+      document.getElementById('song-now-playing-badge').textContent = `🎶 Playing: ${song.title}`;
+
+      playNextSongEvent();
+    }
+
+    function playNextSongEvent() {
+      if (!songPlaying) return;
+      const song = KIDS_SONGS[selectedSongIdx];
+
+      if (songEventIdx >= songFlatEvents.length) {
+        // Song finished! Celebrate!
+        stopSong();
+        spawnConfetti(window.innerWidth / 2, window.innerHeight / 2, 18);
+        showToast(`🎉 Great singing! "${song.title}" finished!`);
+        return;
+      }
+
+      const ev = songFlatEvents[songEventIdx];
+      const beatMs = (60000 / song.bpm) / songTempoMult;
+      const durationMs = ev.beats * beatMs;
+
+      // Play melody note + gentle bass accompaniment
+      const freq = NOTES[ev.noteName] || 0;
+      if (freq > 0) {
+        playTone(freq, (durationMs / 1000) * 0.88, 'triangle', 0.24);
+        if (songEventIdx % 2 === 0) {
+          playTone(freq / 2, (durationMs / 1000) * 0.7, 'sine', 0.1);
+        }
+      }
+      if (songEventIdx % 2 === 0) {
+        playDrumHit('kick');
+      }
+
+      // Highlight & scroll karaoke lyric line
+      document.querySelectorAll('.lyric-line').forEach((el, idx) => {
+        el.classList.toggle('active-lyric', idx === ev.lineIdx);
+      });
+      const activeLineEl = document.getElementById(`lyric-line-${ev.lineIdx}`);
+      if (activeLineEl && ev.isLineStart) {
+        activeLineEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      // Synced Animal Dance Bounce on every beat!
+      pulseSongDancers(songEventIdx);
+      if (songEventIdx % 3 === 0) {
+        spawnStageNote('song-notes-layer');
+      }
+
+      // Update Progress Bar
+      const pct = Math.round(((songEventIdx + 1) / songFlatEvents.length) * 100);
+      document.getElementById('song-progress-bar').style.width = `${pct}%`;
+      document.getElementById('song-progress-label').textContent = `${pct}%`;
+
+      songEventIdx++;
+      songStepTimeout = setTimeout(playNextSongEvent, durationMs);
+    }
+
+    function pulseSongDancers(beatIndex) {
+      const dancers = document.querySelectorAll('.song-dancer > div');
+      dancers.forEach((el, idx) => {
+        const up = (beatIndex + idx) % 2 === 0;
+        const tilt = up ? (idx % 2 === 0 ? -12 : 12) : (idx % 2 === 0 ? 6 : -6);
+        el.style.transform = up
+          ? `translateY(-22px) rotate(${tilt}deg) scale(1.14)`
+          : `translateY(0px) rotate(${tilt}deg) scale(0.98)`;
+      });
+    }
+
+    function resetSongDancers() {
+      document.querySelectorAll('.song-dancer > div').forEach((el) => {
+        el.style.transform = 'none';
+      });
+    }
+
+    function stopSong() {
+      songPlaying = false;
+      clearTimeout(songStepTimeout);
+      songEventIdx = 0;
+      resetSongDancers();
+
+      const playIcon = document.getElementById('song-play-icon');
+      const playText = document.getElementById('song-play-text');
+      if (playIcon) playIcon.textContent = '▶️';
+      if (playText) playText.textContent = 'Play Song';
+
+      document.querySelectorAll('.lyric-line').forEach((el) => el.classList.remove('active-lyric'));
+      const bar = document.getElementById('song-progress-bar');
+      const lbl = document.getElementById('song-progress-label');
+      if (bar) bar.style.width = '0%';
+      if (lbl) lbl.textContent = '0%';
+      const badge = document.getElementById('song-now-playing-badge');
+      if (badge && KIDS_SONGS[selectedSongIdx]) {
+        badge.textContent = `🎵 Ready: ${KIDS_SONGS[selectedSongIdx].title}`;
+      }
+    }
+
+    /* ============================================================
+       10. MULTI-DEVICE: SMART TV MODE, 2D D-PAD REMOTE & TOUCH SWIPE
+       ============================================================ */
+    let tvModeEnabled = false;
+    let tvModeManualOverride = false;
+
+    function toggleTvMode() {
+      playPopSfx();
+      tvModeManualOverride = true;
+      setTvMode(!tvModeEnabled, true);
+    }
+
+    function setTvMode(enabled, notify = false) {
+      tvModeEnabled = enabled;
+      document.body.classList.toggle('tv-mode', enabled);
+      const btn = document.getElementById('btn-tv-mode');
+      if (btn) {
+        if (enabled) {
+          btn.className = 'px-2.5 sm:px-3 py-2 rounded-2xl text-xs sm:text-sm font-bold border-2 border-amber-400 bg-amber-400 text-amber-950 shadow flex items-center gap-1 transition-all';
+        } else {
+          btn.className = 'px-2.5 sm:px-3 py-2 rounded-2xl text-xs sm:text-sm font-bold border-2 border-slate-200 bg-slate-100 text-slate-700 hover:bg-amber-100 flex items-center gap-1 transition-all';
+        }
+      }
+      if (notify) {
+        showToast(enabled ? '📺 Smart TV Mode ON (Large Screen & Remote D-Pad Ready!)' : '💻 Standard Laptop / Phone Mode');
+      }
+    }
+
+    function checkResponsiveTvAutoDetect() {
+      if (tvModeManualOverride) return;
+      const isTvScreen = window.innerWidth >= 1600;
+      if (isTvScreen !== tvModeEnabled) {
+        setTvMode(isTvScreen, false);
+      }
+    }
+
+    // Spatial 2D D-Pad / Arrow-Key Navigation for Smart TV Remotes & Keyboards
+    function getVisibleFocusables() {
+      const all = Array.from(document.querySelectorAll('button:not([disabled]), [tabindex="0"]'));
+      return all.filter((el) => {
+        if (el.offsetParent === null) return false;
+        const rect = el.getBoundingClientRect();
+        return rect.width > 0 && rect.height > 0;
+      });
+    }
+
+    function setTvFocus(el) {
+      if (!el) return;
+      document.querySelectorAll('.tv-focused').forEach((prev) => prev.classList.remove('tv-focused'));
+      el.classList.add('tv-focused');
+      el.focus({ preventScroll: true });
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+    }
+
+    function moveSpatialFocus(direction) {
+      const items = getVisibleFocusables();
+      if (!items.length) return;
+
+      const current = document.activeElement && items.includes(document.activeElement)
+        ? document.activeElement
+        : document.querySelector('.tv-focused');
+
+      if (!current || !items.includes(current)) {
+        setTvFocus(items[0]);
+        return;
+      }
+
+      const curRect = current.getBoundingClientRect();
+      const curCx = curRect.left + curRect.width / 2;
+      const curCy = curRect.top + curRect.height / 2;
+
+      let bestCandidate = null;
+      let bestScore = Infinity;
+
+      items.forEach((cand) => {
+        if (cand === current) return;
+        const r = cand.getBoundingClientRect();
+        const cx = r.left + r.width / 2;
+        const cy = r.top + r.height / 2;
+        const dx = cx - curCx;
+        const dy = cy - curCy;
+
+        let valid = false;
+        let primaryDist = 0;
+        let crossDist = 0;
+
+        if (direction === 'ArrowRight' && dx > 12) {
+          valid = true;
+          primaryDist = dx;
+          crossDist = Math.abs(dy);
+        } else if (direction === 'ArrowLeft' && dx < -12) {
+          valid = true;
+          primaryDist = -dx;
+          crossDist = Math.abs(dy);
+        } else if (direction === 'ArrowDown' && dy > 12) {
+          valid = true;
+          primaryDist = dy;
+          crossDist = Math.abs(dx);
+        } else if (direction === 'ArrowUp' && dy < -12) {
+          valid = true;
+          primaryDist = -dy;
+          crossDist = Math.abs(dx);
+        }
+
+        if (valid) {
+          // Heavily favor elements aligned in the same row/column
+          const score = primaryDist + crossDist * 2.6;
+          if (score < bestScore) {
+            bestScore = score;
+            bestCandidate = cand;
+          }
+        }
+      });
+
+      if (bestCandidate) {
+        playPopSfx();
+        setTvFocus(bestCandidate);
+      }
+    }
+
+    function setupKeyboardAndTvRemote() {
+      document.addEventListener('keydown', (e) => {
+        const key = e.key;
+
+        // Back / Escape on TV Remote or Keyboard returns from sub-views to Home
+        if (key === 'Escape' || key === 'Backspace' || key === 'BrowserBack') {
+          if (currentView !== 'home') {
+            e.preventDefault();
+            navigateTo('home');
+          }
+          return;
+        }
+
+        // Spatial 2D D-Pad Arrow Navigation
+        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
+          e.preventDefault();
+          moveSpatialFocus(key);
+          return;
+        }
+
+        // Enter / Space triggers focused custom elements cleanly
+        if ((key === 'Enter' || key === ' ') && document.activeElement) {
+          if (document.activeElement.id === 'fc-visual-card') {
+            e.preventDefault();
+            handleCardTap();
+          }
+        }
+      });
+
+      // Clear TV highlight ring when switching back to mouse/touch pointer
+      document.addEventListener('pointerdown', () => {
+        document.querySelectorAll('.tv-focused').forEach((el) => el.classList.remove('tv-focused'));
+      });
+    }
+
+    // Touch Swipe Gestures on Flashcard for Phone & Tablet Users
+    function setupFlashcardTouchSwipe() {
+      const card = document.getElementById('fc-visual-card');
+      if (!card) return;
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      card.addEventListener('touchstart', (e) => {
+        if (e.touches && e.touches.length === 1) {
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+        }
+      }, { passive: true });
+
+      card.addEventListener('touchend', (e) => {
+        if (!e.changedTouches || e.changedTouches.length !== 1) return;
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.4) {
+          if (dx < 0) nextCard();
+          else prevCard();
+        }
+      }, { passive: true });
+    }
+
+    /* ============================================================
+       11. INITIALIZATION ON WINDOW LOAD
+       ============================================================ */
+    window.onload = function () {
+      // Unlock Web Audio API on first user interaction anywhere in the page
+      ['pointerdown', 'keydown', 'touchstart'].forEach((evt) => {
+        document.addEventListener(evt, () => getAudioCtx(), { once: true, passive: true });
+      });
+
+      // Pre-load speech voices when available
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.getVoices();
+        window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+      }
+
+      setTheme('boy', false);
+      renderCategoryGrid();
+      initStudioEqualizer();
+      renderSongSelector();
+      renderKaraokeLyrics();
+
+      checkResponsiveTvAutoDetect();
+      window.addEventListener('resize', checkResponsiveTvAutoDetect);
+      setupKeyboardAndTvRemote();
+      setupFlashcardTouchSwipe();
+    };
+  </script>
+</body>
+</html>
